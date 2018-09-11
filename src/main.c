@@ -5,7 +5,7 @@
 #include <example_entry.h>
 
 extern void console_init(void);
-
+extern void wifi_sniffer();
 
 /**
   * @brief  Main program.
@@ -23,7 +23,8 @@ void main(void)
 
 	/* wlan intialization */
 #if defined(CONFIG_WIFI_NORMAL) && defined(CONFIG_NETWORK)
-	wlan_network();
+	//wlan_network();
+        wifi_sniffer();
 #endif
 
 	/* Execute application example */

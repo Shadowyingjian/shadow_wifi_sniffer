@@ -682,6 +682,12 @@
     <file>
       <name>$PROJ_DIR$\..\src\main.c</name>
     </file>
+    <file>
+      <name>$PROJ_DIR$\..\src\my_promic.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\src\wifi_sniffer.c</name>
+    </file>
   </group>
   <group>
     <name>utilities</name>
