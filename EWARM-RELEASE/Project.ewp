@@ -1615,6 +1615,9 @@
       <name>$PROJ_DIR$\..\src\my_promic.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\src\my_promic.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\src\wifi_sniffer.c</name>
     </file>
   </group>

@@ -1,14 +1,15 @@
+
 #include "FreeRTOS.h"
 #include "task.h"
 #include "main.h"
 #include "tcpip.h"
 #include "wifi/wifi_conf.h"
-
+#include "my_promic.h"
 #ifndef CONFIG_WLAN
 #define CONFIG_WLAN 1
 #endif
 
-
+/*
 //添加这部分是为了实现去重输出
 uint64_t timestamp = 121;
 uint64_t lasttime = 0;
@@ -30,26 +31,6 @@ uint16_t seq_channel = 1;
 #define VDATA_MAX_MAC_ROUTER 128
 #define VDATA_MAX_MAC_SSID 128
 
-typedef struct{
-    int64_t mac;
-    uint8_t rssi;
-    uint64_t time;
-}vdata_device_t;
-
-typedef struct{
-    int64_t mac;
-    uint8_t rssi;
-    uint8_t ssid_len;
-    uint8_t ssid[32];
-    uint64_t time;
-}vdata_router_t;
-
-typedef struct{
-    uint8_t ssid[32];
-    uint8_t len;
-    uint8_t mac[6];
-    uint64_t time;
-}vdata_ssid_t;
 
 vdata_device_t vdata_device[VDATA_MAX_MAC_NUM];
 vdata_router_t vdata_router[VDATA_MAX_MAC_ROUTER];
@@ -68,7 +49,7 @@ void trans_int_to_string(uint8_t *s, uint8_t data);
 void str_encrypt(uint8_t *s, uint8_t *array, uint16_t len);
 //volatile int *rand;
 uint8_t G_KEY;
-
+*/
 
 
 #if CONFIG_WLAN
@@ -125,7 +106,7 @@ int my_promisc_get_fixed_channel(void *fixed_bssid, u8 *ssid, int *ssid_length)
 
 // End of Add extra interfaces
 
-
+/*
 //添加去重函数
 void vdata_init_device(void)
 {
@@ -353,17 +334,18 @@ void print_mac_device(uint8_t *mac,uint8_t rssi,uint8_t *mac2, uint8_t ssid_len,
   {
     if( vdata_insert_device(mac, g_second) > 0 ){
       if( mac2 == NULL ){
-          printf("01|%02X%02X%02X%02X%02X%02X|%02X\n\0",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi);
+          printf("\r\n 01|%02X%02X%02X%02X%02X%02X|%02X\n\0",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi);
           
       }else{
-          printf("02|%02X%02X%02X%02X%02X%02X|%02X|%02X%02X%02X%02X%02X%02X|%02d|\0",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi,mac2[0],mac2[1],mac2[2],mac2[3],mac2[4],mac2[5],ssid_len);
-          /*if( ssid_len < 33){
-              int i;
-              for ( i = 0;i < ssid_len; i++){
-                    
-              }
-              //printf(""ssid name )
-           }*/
+          printf("\r\n 02|%02X%02X%02X%02X%02X%02X|%02X|%02X%02X%02X%02X%02X%02X|%02d|\0",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi,mac2[0],mac2[1],mac2[2],mac2[3],mac2[4],mac2[5],ssid_len);
+          
+          if(ssid_len < 33){
+             printf(" %s\r\n",ptr_ssid);
+          }
+          else{
+             printf("\r\n");
+          }
+          
       }
       memcpy(mac_mobile_old ,mac, 6);
       vdata_time_last_device = g_second;
@@ -391,12 +373,14 @@ void print_mac_router(uint8_t *mac, uint8_t rssi, uint8_t ssid_len, uint8_t *ptr
   
   if( memcmp(mac_bssid_old,mac,6) != 0 ){
     if( vdata_insert_router( mac,g_second) > 0 ){
-        printf("00|%02X%02X%02X%02X%02X%02X|%02X|%02d|",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi,ssid_len);
-        
-        /*int i;
-        for (i = 0; i< ssid_len; i++)
-        
-        */
+        printf("\r\n 00|%02X%02X%02X%02X%02X%02X|%02X|%02d|",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi,ssid_len);
+        if(ssid_len < 33){
+             printf(" %s\r\n",ptr_ssid);
+          }
+          else{
+             printf("\r\n");
+          }
+       
         memcpy( mac_bssid_old,mac,6);
         vdata_time_last_router = g_second;
     } 
@@ -404,7 +388,7 @@ void print_mac_router(uint8_t *mac, uint8_t rssi, uint8_t ssid_len, uint8_t *ptr
   
 
 }
-
+*/
 /*
 company_printf(const char* fmt,...);
 自定义printf函数
@@ -431,33 +415,14 @@ int company_printf(const char* fmt, ...)
  puts(printf_buf);
   return printed;
 }
-struct my_eth_frame{
-      struct my_eth_frame *prev;
-      struct my_eth_frame *next;
-      unsigned char da[6];
-      unsigned char sa[6];
-      unsigned int len;
-      unsigned char type;
-      signed char rssi;
-      unsigned char ssid[32];
-      unsigned int ssid_len;
-      unsigned char data[500];
-      unsigned char f_type;
-};
+
 
 #if CONFIG_INIC_CMD_RSP
 #if defined(__IAR_SYSTEMS_ICC__)||defined (__GNUC__)
 #pragma pack(1)
 #endif
 
-struct my_inic_eth_frame{
-        unsigned char da[6];
-        unsigned char sa[6];
-        unsigned int len;
-        unsigned char type;
-        unsigned char ssid[32];
-        unsigned int ssid_len;
-};
+
 
 #if defined(__IAR_SYSTEMS_ICC__)||defined (__GNUC__)
 #pragma pack()
@@ -471,13 +436,9 @@ static int my_inic_frame_cnt = 0;
 extern void inic_c2h_msg(const char *atcmd, char status, char *msg, u16 msg_len);
 #endif
 
-struct my_eth_buffer{
-      struct my_eth_frame *head;
-      struct my_eth_frame *tail;
-};
 
 
-static struct my_eth_buffer my_eth_buffer;
+
 
 #ifdef CONFIG_PROMISC
 #define MY_MAX_PACKET_FILTER_INFO 5
@@ -717,8 +678,9 @@ static void my_promisc_test(int duration, unsigned char len_used)
 		vPortFree((void *) frame);
 }
 
-static void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* userdata)
+void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* userdata)
 {
+  /*
 	struct my_eth_frame *frame = (struct my_eth_frame *) pvPortMalloc(sizeof(struct my_eth_frame));
 	
 	if(frame) {
@@ -731,6 +693,7 @@ static void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* 
                 //add for find out 
                 if( memcmp(g_3macs,buf+4,18) == 0){
                     // 三个mac都和上次一样，则不解析
+                  printf(" g_3macs in the same!\r\n");
                     return;
                      
                 }
@@ -739,11 +702,12 @@ static void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* 
                 memcpy( mac2,buf+10,6);
                 memcpy( mac3,buf+16,6);
                 if( mac1 == mac2 && mac2 == mac3){
+                     printf(" mac1 mac2 mac3 in the same!\r\n");
                      return;
                 }
                 
                 
-                printf("\r\n Sniffer Test:::\r\n");
+               // printf("\r\n Sniffer Test:::\r\n");
                 //add by shadow
                 memcpy(frame->data,buf,sizeof(frame->data));
                 
@@ -753,19 +717,22 @@ static void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* 
                // frame->ssid_len = buf[49];
                // memcpy(frame->ssid,buf+50,buf[49]);
 		frame->len = len;
+  
+  */
 		/*  
 		* type is the first byte of Frame Control Field of 802.11 frame
 		* If the from/to ds information is needed, type could be reused as follows:
 		* frame->type = ((((ieee80211_frame_info_t *)userdata)->i_fc & 0x0100) == 0x0100) ? 2 : 1;
 		* 1: from ds; 2: to ds
-		*/		
-		frame->type = *buf;
-		frame->rssi = ((ieee80211_frame_info_t *)userdata)->rssi;
+		*/	
+  
+//		frame->type = *buf;
+//		frame->rssi = ((ieee80211_frame_info_t *)userdata)->rssi;
                 
                 /*
                 add by shadow for know wifi ssid
                 */
-               
+  /*            
                 if(frame->type == 0x40)
                 {
                   frame->ssid_len =frame->data[25];
@@ -780,12 +747,12 @@ static void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* 
                    memcpy(frame->ssid,buf+38,frame->ssid_len);
                  //  printf("\r\n ssid_len = %d ,ssid = %s \r\n",frame->ssid_len,frame->ssid);
                   if( frame->type == 0x50){
-                    print_mac_device( mac1,frame->rssi,mac2,frame->ssid_len,frame->ssid);
+                  print_mac_device( mac1,frame->rssi,mac2,frame->ssid_len,frame->ssid);
                    
                   }
                   
                   if ( frame->type == 0x80 ){
-                     print_mac_router(mac2,frame->rssi,frame->ssid_len,frame->ssid);
+                    print_mac_router(mac2,frame->rssi,frame->ssid_len,frame->ssid);
                   }
                   
                   
@@ -805,11 +772,56 @@ static void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* 
 		}
 
 		taskEXIT_CRITICAL();
-	}
+	
+        }
+  */
 }
 
-static void my_promisc_test_all(int duration, unsigned char len_used)
+void my_promisc_test_all_v2( )
 {
+/*
+        int ch;
+	unsigned int start_time;
+	struct my_eth_frame *frame;
+	my_eth_buffer.head = NULL;
+	my_eth_buffer.tail = NULL;
+
+	wifi_enter_promisc_mode();
+	wifi_set_promisc(RTW_PROMISC_ENABLE_2, my_promisc_callback_all, 0);
+        //wifi_set_channel(3); 
+        ch = 1;
+        int x = 0;
+        while(1){
+          x++;
+          frame = my_retrieve_frame();
+          if(frame){
+            
+             memset(frame->ssid,0,sizeof(frame->ssid));
+            vPortFree((void *) frame);
+          }
+          
+          vTaskDelay(1);
+          
+          if(x % 10000 == 0 ){
+            x = 0 ;
+            ch ++;
+            
+            if(ch > 13)
+            {
+               ch =1;
+            }
+              wifi_set_channel( ch); 
+            printf(" channel = %d \r\n ",ch);
+          }
+
+          
+        };
+  */
+
+}
+void my_promisc_test_all(int duration, unsigned char len_used)
+{
+/*
 	int ch;
 	unsigned int start_time;
 	struct my_eth_frame *frame;
@@ -818,14 +830,10 @@ static void my_promisc_test_all(int duration, unsigned char len_used)
 
 	wifi_enter_promisc_mode();
 	wifi_set_promisc(RTW_PROMISC_ENABLE_2, my_promisc_callback_all, len_used);
-
-       
-     
-    
-        for(;;){
-	//for(ch = 1; ch <= 13; ch ++) {
-		//if(wifi_set_channel(ch) == 0)
-		//	printf("\n\n\rSwitch to channel(%d)", ch);
+        printf("---Start ....\r\n");
+	for(ch = 1; ch <= 13; ch ++) {
+		if(wifi_set_channel(ch) == 0)
+			printf("\n\n\rSwitch to channel(%d)", ch);
 
 		start_time = xTaskGetTickCount();
 
@@ -834,7 +842,7 @@ static void my_promisc_test_all(int duration, unsigned char len_used)
 
 			if((current_time - start_time) < (duration * configTICK_RATE_HZ)) {
 				frame = my_retrieve_frame();
-                                if(frame){
+                                if(frame){ */
                                   /*
                                     int i = 0;
                                     printf("\n\r |%02X|DA:", frame->type); 
@@ -843,9 +851,9 @@ static void my_promisc_test_all(int duration, unsigned char len_used)
                                     printf("|SA:");
                                     for(i=0;i<6;i++)
                                       printf("%02X",frame->sa[i]);
-                                    printf("|%d|%d|%s\r\n",frame->rssi,ch,frame->ssid);
-                                  */
-                                    memset(frame->ssid,0,sizeof(frame->ssid));
+                                    printf("|%d|%d|%s\r\n",frame->rssi,ch,frame->ssid);*/
+                                  
+                          //          memset(frame->ssid,0,sizeof(frame->ssid));
                                 
                                
 /*
@@ -865,7 +873,7 @@ static void my_promisc_test_all(int duration, unsigned char len_used)
                                        memset(frame->ssid,0,sizeof(frame->ssid));
                                        printf("\r\n");
 */   
-
+/*
 #if CONFIG_INIC_CMD_RSP
 					if(my_inic_frame_tail){
 						if(my_inic_fr*ame_cnt < MY_MAX_INIC_FRAME_NUM){
@@ -898,11 +906,14 @@ static void my_promisc_test_all(int duration, unsigned char len_used)
 	}
 
 
+
 	wifi_set_promisc(RTW_PROMISC_DISABLE, NULL, 0);
 
 	while((frame = my_retrieve_frame()) != NULL)
 		vPortFree((void *) frame);
-        company_printf("Task _end \r\n");
+        printf("\r\n   end ....\r\n");
+                                  */
+       
 }
 
 void my_promsic_demo(int duration, unsigned char len_used)

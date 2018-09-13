@@ -31555,7 +31555,7 @@ void fATSx(void *arg)
 	char buf[64];
 	
 	do{ rtl_printf("[ATS?]: _AT_SYSTEM_HELP_"); rtl_printf("\r\n"); }while(0);
-	do{ rtl_printf("[ATS?]: COMPILE TIME: %s", "周四 2018/09- 9:37:02"); rtl_printf("\r\n"); }while(0);
+	do{ rtl_printf("[ATS?]: COMPILE TIME: %s", "周四 2018/09-19:39:14"); rtl_printf("\r\n"); }while(0);
 
 	_strcpy(buf, "v");
 

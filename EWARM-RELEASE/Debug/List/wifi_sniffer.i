@@ -18006,6 +18006,63 @@ void dhcps_deinit(void);
 extern struct netif *netif_default;
 
 #line 21 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.h"
+
+
+
+struct my_eth_frame{
+      struct my_eth_frame *prev;
+      struct my_eth_frame *next;
+      unsigned char da[6];
+      unsigned char sa[6];
+      unsigned int len;
+      unsigned char type;
+      signed char rssi;
+      unsigned char ssid[32];
+      unsigned int ssid_len;
+      unsigned char data[500];
+      unsigned char f_type;
+};
+
+struct my_inic_eth_frame{
+        unsigned char da[6];
+        unsigned char sa[6];
+        unsigned int len;
+        unsigned char type;
+        unsigned char ssid[32];
+        unsigned int ssid_len;
+};
+struct my_eth_buffer{
+      struct my_eth_frame *head;
+      struct my_eth_frame *tail;
+};
+
+typedef struct{
+    int64_t mac;
+    uint8_t rssi;
+    uint64_t time;
+}vdata_device_t;
+
+typedef struct{
+    int64_t mac;
+    uint8_t rssi;
+    uint8_t ssid_len;
+    uint8_t ssid[32];
+    uint64_t time;
+}vdata_router_t;
+
+typedef struct{
+    uint8_t ssid[32];
+    uint8_t len;
+    uint8_t mac[6];
+    uint64_t time;
+}vdata_ssid_t;
+
+static struct my_eth_buffer my_eth_buffer;
+
+
+#line 22 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+   
 #line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
 
 
@@ -21198,26 +21255,30 @@ void wifi_set_ap_polling_sta(__u8 enabled);
 
 
 
-#line 23 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+#line 25 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
 #line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\test\\wlan/wlan_test_inc.h"
 
 #line 22 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\test\\wlan/wlan_test_inc.h"
 
 
-#line 26 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+#line 28 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
 
 
 
 
 
 
-#line 38 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+#line 40 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
 
   
 
 extern void promisc_test_all(int duration, unsigned char len_used);
 extern void vdata_init_device(void);
 extern void vdata_init_router(void);
+extern void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* userdata);
+extern void my_promisc_test_all_v2();
+
+
 
 
 SemaphoreHandle_t uart_rx_interrupt_sema_wifisniffer = 0;
@@ -34761,7 +34822,7 @@ enum {
 
 
 
-#line 50 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+#line 56 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
 gtimer_t my_timer1;
 extern uint64_t g_times;
 extern uint64_t timestamp;
@@ -34773,23 +34834,42 @@ void timer1_timeout_handler( uint32_t id)
     g_times++;
     timestamp++;
     if( g_times % 10 == 0 ){
-      g_second++;
-      rtl_printf("\r\n g_second = %d \r\n",g_second);
+         g_second++;
+      
     }
-    if( g_times % 3 ==0){
+    
+    
+    
+    if( g_times % 20 ==0){
         seq_channel += 3;
         if( seq_channel >13 ){
              seq_channel = 1;
         }
     }
     
-    set_channel_flag = wifi_set_channel(seq_channel);
-    if( set_channel_flag != 0 ){
-      rtl_printf("\r\n set channel faild \r\n");
+    if(g_second %10 == 0)
+    {
+     wifi_init_packet_filter();
+         vdata_init_device();
+         vdata_init_router();
     }
+    
+   
+  
+   
+  
     
     
 
+}
+
+
+
+
+
+void MY_ATWM(void *arg){ 
+	
+        my_cmd_pr();
 }
 
 
@@ -34801,16 +34881,16 @@ void wifi_sniffer_init_thread(void *param)
 
 	 
 	LwIP_Init();
-#line 95 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+#line 120 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
 	wifi_on(RTW_MODE_STA);
 
 	
 	wifi_set_autoreconnect(1);
 
-	rtl_printf("\n\r%s(%d), Available heap 0x%x", __FUNCTION__, 100, xPortGetFreeHeapSize());	
+	rtl_printf("\n\r%s(%d), Available heap 0x%x", __FUNCTION__, 125, xPortGetFreeHeapSize());	
 
 
-#line 109 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+#line 134 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
         wifi_init_packet_filter();
         
          vdata_init_device();
@@ -34820,14 +34900,16 @@ void wifi_sniffer_init_thread(void *param)
         
         gtimer_start_periodical( &my_timer1, 100000, (void*)timer1_timeout_handler,0);
         
-        while(1)
-        {
-          
-         
-         
-          
-          my_promsic_demo(10,0);
+        while(1){
+         MY_ATWM(param);
         }
+      
+          
+      
+         
+       
+         
+       
 	 
 	vTaskDelete(0);
 }
