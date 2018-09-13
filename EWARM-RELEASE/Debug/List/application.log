@@ -1,11 +1,11 @@
 
 Veneer stats:
 
-  2743 definitions
-  9733 references
-       8811 R_ARM_THM_CALL
-        919 R_ARM_THM_JUMP24
+  2760 definitions
+  9766 references
+       8841 R_ARM_THM_CALL
+        922 R_ARM_THM_JUMP24
           3 R_ARM_THM_JUMP19
-   258 veneers               2064 bytes
-        258 Thumb2 veneer         2064 bytes
-  1043 redirected references
+   264 veneers               2112 bytes
+        264 Thumb2 veneer         2112 bytes
+  1061 redirected references

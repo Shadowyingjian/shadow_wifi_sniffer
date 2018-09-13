@@ -31555,12 +31555,12 @@ void fATSx(void *arg)
 	char buf[64];
 	
 	do{ rtl_printf("[ATS?]: _AT_SYSTEM_HELP_"); rtl_printf("\r\n"); }while(0);
-	do{ rtl_printf("[ATS?]: COMPILE TIME: %s", "周二 2018/09-14:50:42"); rtl_printf("\r\n"); }while(0);
+	do{ rtl_printf("[ATS?]: COMPILE TIME: %s", "周四 2018/09- 9:37:02"); rtl_printf("\r\n"); }while(0);
 
 	_strcpy(buf, "v");
 
 
-	__rtl_strcat_v1_00(buf, ".3.4." "周二 2018/09");
+	__rtl_strcat_v1_00(buf, ".3.4." "周四 2018/09");
 	do{ rtl_printf("[ATS?]: SW VERSION: %s", buf); rtl_printf("\r\n"); }while(0);
 }
 #line 1120 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\at_cmd\\atcmd_sys.c"

@@ -20084,6 +20084,69 @@ void wifi_set_ap_polling_sta(__u8 enabled);
 
 
 
+uint64_t timestamp = 121;
+uint64_t lasttime = 0;
+uint32_t g_second = 0;
+
+uint64_t g_times = 0;
+uint8_t mac_bssid_old[6] = {0xff,0xff,0xff,0xff,0xff,0xff};
+uint8_t mac_mobile_old[6] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
+uint8_t g_3macs[18] = {0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff};
+uint8_t last_ssid[6] = {0xff,0xff,0xff,0xff,0xff,0xff};
+uint32_t last_time = 0;
+
+uint8_t mac1[6];
+uint8_t mac2[6];
+uint8_t mac3[6];
+
+uint16_t seq_channel = 1;
+
+
+
+
+typedef struct{
+    int64_t mac;
+    uint8_t rssi;
+    uint64_t time;
+}vdata_device_t;
+
+typedef struct{
+    int64_t mac;
+    uint8_t rssi;
+    uint8_t ssid_len;
+    uint8_t ssid[32];
+    uint64_t time;
+}vdata_router_t;
+
+typedef struct{
+    uint8_t ssid[32];
+    uint8_t len;
+    uint8_t mac[6];
+    uint64_t time;
+}vdata_ssid_t;
+
+vdata_device_t vdata_device[128];
+vdata_router_t vdata_router[128];
+vdata_ssid_t vdata_ssid[128];
+
+void vdata_init_device(void);
+void vdata_init_router(void);
+void vdata_init_ssid(void);
+
+int64_t vdata_insert_device(uint8_t *mac, uint64_t time);
+int64_t vdata_insert_router(uint8_t *mac, uint64_t time);
+int8_t vdata_insert_ssid(uint8_t *new_bssid, uint8_t bbssidlen, uint64_t time);
+
+void trans_int_to_char(uint8_t *s, uint8_t *array, uint16_t len);
+void trans_int_to_string(uint8_t *s, uint8_t data);
+void str_encrypt(uint8_t *s, uint8_t *array, uint16_t len);
+
+uint8_t G_KEY;
+
+
+
+
+
 
 
 
@@ -20138,6 +20201,286 @@ int my_promisc_get_fixed_channel(void *fixed_bssid, uint8_t *ssid, int *ssid_len
 
 
 
+void vdata_init_device(void)
+{
+    uint16_t i = 0;
+    for(i = 0; i < 128; i++){
+        vdata_device[i].mac = -1;
+        vdata_device[i].rssi = 0;
+        vdata_device[i].time = 0;
+    }
+}
+
+void vdata_init_router(void)
+{
+    uint16_t i = 0;
+    for(i = 0; i < 128; i++){
+        vdata_router[i].mac = -1;
+        vdata_router[i].rssi = 0;
+        vdata_router[i].time = 0;
+    }
+}
+
+void vdata_init_ssid(void)
+{
+    uint16_t i;
+    for(i = 0; i < 128; i++){
+        bzero(vdata_ssid[i].ssid,sizeof(vdata_ssid[i].ssid));
+        vdata_ssid[i].len=0;
+    }
+}
+
+int64_t mac_2_int64(uint8_t *str)
+{
+	int64_t res = -1;
+	res = ((int64_t)str[0] << 40) | ((int64_t)str[1] << 32) | ((int64_t)str[2] << 24) | ((int64_t)str[3] << 16) | ((int64_t)str[4] << 8) | str[5];
+	return res;
+}
+
+int64_t vdata_insert_device(uint8_t *mac, uint64_t time)
+{
+	int64_t  new_mac = -1;
+    uint16_t index = 0 , i = 0;
+    uint64_t cmp_time = 0xFFFFFFFF;
+    
+    new_mac = mac_2_int64(mac);
+    for(i = 0; i < 128; i++){
+        if(cmp_time > vdata_device[i].time){
+            cmp_time = vdata_device[i].time;
+            index = i;
+        }
+        if(vdata_device[i].mac == -1){
+            vdata_device[i].mac = new_mac;
+            vdata_device[i].time= time;
+            return new_mac;
+        }else if(vdata_device[i].mac == new_mac){
+            if(time - vdata_device[i].time > 6){
+                vdata_device[i].time = time;
+                return new_mac;
+            }else{
+                return -1;
+            }
+        }
+    }
+    if(i >= 128){
+        vdata_device[index].mac = new_mac;
+        vdata_device[index].time = time;
+        return new_mac;
+    }
+    return -1;
+}
+
+int64_t vdata_insert_router(uint8_t *mac, uint64_t time)
+{
+	int64_t  new_mac = -1;
+    uint16_t index = 0 , i = 0;
+    uint64_t cmp_time = 0xFFFFFFFFFFFFFFFF;
+    
+    new_mac = mac_2_int64(mac);
+    for(i = 0; i < 128; i++){
+        if(cmp_time > vdata_router[i].time){
+            cmp_time = vdata_router[i].time;
+            index = i;
+        }
+        if(vdata_router[i].mac == -1){
+            vdata_router[i].mac = new_mac;
+            vdata_router[i].time= time;
+            return new_mac;
+        }else if(vdata_router[i].mac == new_mac){
+            if(time - vdata_router[i].time > 60){
+                vdata_router[i].time = time;
+                return new_mac;
+            }else{
+                return -1;
+            }
+        }
+    }
+
+    if(i >= 128){
+        vdata_router[index].mac = new_mac;
+        vdata_router[index].time = time;
+        return new_mac;
+    }
+    return -1;
+}
+
+int8_t vdata_insert_ssid(uint8_t *new_bssid, uint8_t bssidlen, uint64_t time)
+{
+	if (bssidlen > 32){
+		bssidlen = 32;
+	}
+	int64_t  new_mac = -1;
+    uint16_t index = 0 , i = 0;
+    uint64_t cmp_time = 0xFFFFFFFFFFFFFFFF;
+    int j;
+    for(i = 0; i < 128; i++){
+        if(cmp_time > vdata_ssid[i].time){
+            cmp_time = vdata_ssid[i].time;
+            index = i;
+        }
+        if(vdata_ssid[i].len==0){
+            _memcpy(vdata_ssid[i]. ssid, new_bssid, bssidlen);
+            vdata_ssid[i].len = bssidlen;
+            for(j= 0; j < 6; j++){
+            	
+              vdata_ssid[i].mac[j] =   0xFF;
+            }
+            vdata_ssid[i].time = time;
+            return 0;
+        }else if(_memcmp(vdata_ssid[i]. ssid, new_bssid, bssidlen) == 0 && vdata_ssid[i].len == bssidlen){
+            if(time - vdata_ssid[i].time > 0){
+                vdata_ssid[i].time = time;
+                return 1;
+            }else{
+                return -2;
+            }
+        }
+    }
+    if(i >= 128){
+    	bzero(vdata_ssid[index].ssid,sizeof(vdata_ssid[index].ssid));
+        _memcpy(vdata_ssid[index]. ssid, new_bssid, bssidlen);
+        vdata_ssid[index].len = bssidlen;
+        vdata_ssid[index].time = time;
+        return 0;
+    }
+    return -1;
+}
+
+void trans_int_to_char(uint8_t *s, uint8_t *array, uint16_t len)
+{
+	int i;
+	int temp1;
+	int temp2;
+	int count = 0;
+	_memset(s, 0, len*2+1);
+	if( array == 0 ){
+		return;
+	}
+	for( i = 0; i < len; i++ )
+	{
+		temp1 = 0;
+		temp2 = 0;
+		temp1 = array[i] / 16; 
+		temp2 = array[i] % 16; 
+		if( temp1 > 9 ) 
+			s[count] = 'A'+temp1 -10;
+		else
+			s[count] = '0' + temp1;
+		count++;
+		if( temp2 > 9 ) 
+			s[count] = 'A' + temp2 - 10;
+		else
+			s[count] = '0' + temp2;
+		count++;
+	}
+	s[count]='\0';
+	return;
+}
+
+
+void trans_int_to_string(uint8_t *s, uint8_t data)
+{
+	uint8_t i = 0 , j = 0;
+	for(i = 0;i < 2;i++){
+		j = ((data & 0xF0) >> 4);
+		if((j >= 0)&&(j <= 9)){
+			*s++ = j + '0';
+			data <<= 4;
+			continue;
+		}
+		if((j >= 0x0A)&&(j <= 0x0F)){
+			*s++ = j + 'A' - 0x0A;
+			data <<= 4;
+			continue;
+		}
+		data <<= 4;
+	}
+	*s = '\0';
+	return;
+}
+
+void str_encrypt(uint8_t *s, uint8_t *array, uint16_t len)
+{
+	int i;
+	for(i = 0; i < len; i++)
+	{
+		s[i] = array[i] ^ G_KEY;
+	}
+	s[len] = '\n';
+	s[len+1] = '\0';
+}
+
+uint32_t vdata_time_last_device = 0;
+uint8_t vdata_macprint[32];
+void print_mac_device(uint8_t *mac,uint8_t rssi,uint8_t *mac2, uint8_t ssid_len, uint8_t *ptr_ssid)
+{
+  if( g_second - vdata_time_last_device > 6){
+       mac_mobile_old[0] = 0xff;
+       mac_mobile_old[1] = 0xff;
+       mac_mobile_old[2] = 0xff;
+       mac_mobile_old[3] = 0xff;
+       mac_mobile_old[4] = 0xff;
+       mac_mobile_old[5] = 0xff;
+       vdata_time_last_device = g_second;
+  }
+  if( _memcmp(mac_mobile_old, mac, 6)!= 0 )
+  {
+    if( vdata_insert_device(mac, g_second) > 0 ){
+      if( mac2 == 0 ){
+          rtl_printf("01|%02X%02X%02X%02X%02X%02X|%02X\n\0",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi);
+          
+      }else{
+          rtl_printf("02|%02X%02X%02X%02X%02X%02X|%02X|%02X%02X%02X%02X%02X%02X|%02d|\0",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi,mac2[0],mac2[1],mac2[2],mac2[3],mac2[4],mac2[5],ssid_len);
+          
+
+
+
+
+
+ 
+      }
+      _memcpy(mac_mobile_old, mac, 6);
+      vdata_time_last_device = g_second;
+      
+    }
+  
+  }
+  
+}
+
+
+uint32_t vdata_time_last_router = 0;
+uint8_t vdata_routerprint[32];
+void print_mac_router(uint8_t *mac, uint8_t rssi, uint8_t ssid_len, uint8_t *ptr_ssid )
+{
+  if( g_second - vdata_time_last_router > 6){
+      mac_bssid_old[0] = 0xff;
+      mac_bssid_old[1] = 0xff;
+      mac_bssid_old[2] = 0xff;
+      mac_bssid_old[3] = 0xff;
+      mac_bssid_old[4] = 0xff;
+      mac_bssid_old[5] = 0xff;
+      vdata_time_last_router = g_second;
+  }
+  
+  if( _memcmp(mac_bssid_old, mac, 6) != 0 ){
+    if( vdata_insert_router( mac,g_second) > 0 ){
+        rtl_printf("00|%02X%02X%02X%02X%02X%02X|%02X|%02d|",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi,ssid_len);
+        
+        
+
+
+ 
+        _memcpy(mac_bssid_old, mac, 6);
+        vdata_time_last_router = g_second;
+    } 
+  }
+  
+
+}
+
+
+
 
 
 
@@ -20176,7 +20519,7 @@ struct my_eth_frame{
       unsigned char f_type;
 };
 
-#line 130 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
+#line 473 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
 
 struct my_eth_buffer{
       struct my_eth_frame *head;
@@ -20388,7 +20731,7 @@ static void my_promisc_test(int duration, unsigned char len_used)
 						rtl_printf(" %02x", frame->sa[i]);
 					rtl_printf(", len=%d", frame->len);
 					rtl_printf(", RSSI=%d", frame->rssi);
-#line 352 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
+#line 695 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
 					vPortFree((void *) frame);
 				}
 				else
@@ -20397,7 +20740,7 @@ static void my_promisc_test(int duration, unsigned char len_used)
 			else
 				break;	
 		}
-#line 369 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
+#line 712 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
 	}
 
 	wifi_set_promisc(RTW_PROMISC_DISABLE, 0, 0);
@@ -20416,6 +20759,23 @@ static void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* 
        
 		_memcpy(frame ->da, buf+4, 6);
 		_memcpy(frame ->sa, buf+10, 6);
+                
+                
+                if( _memcmp(g_3macs, buf+4, 18) == 0){
+                    
+                    return;
+                     
+                }
+                _memcpy(g_3macs, buf+4, 18);
+                _memcpy(mac1, buf+4, 6);
+                _memcpy(mac2, buf+10, 6);
+                _memcpy(mac3, buf+16, 6);
+                if( mac1 == mac2 && mac2 == mac3){
+                     return;
+                }
+                
+                
+                rtl_printf("\r\n Sniffer Test:::\r\n");
                 
                 _memcpy(frame ->data, buf, sizeof(frame ->data));
                 
@@ -20443,11 +20803,24 @@ static void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* 
                   frame->ssid_len =frame->data[25];
                   _memcpy(frame ->ssid, buf+26, frame ->ssid_len);
                 
+                  print_mac_device( mac2,frame->rssi,0,frame->ssid_len,frame->ssid);
+                  
                 }
-                else{                
+                else{   
+                  
                    frame->ssid_len = frame->data[37];
                    _memcpy(frame ->ssid, buf+38, frame ->ssid_len);
                  
+                  if( frame->type == 0x50){
+                    print_mac_device( mac1,frame->rssi,mac2,frame->ssid_len,frame->ssid);
+                   
+                  }
+                  
+                  if ( frame->type == 0x80 ){
+                     print_mac_router(mac2,frame->rssi,frame->ssid_len,frame->ssid);
+                  }
+                  
+                  
                 }
                
 
@@ -20478,9 +20851,13 @@ static void my_promisc_test_all(int duration, unsigned char len_used)
 	wifi_enter_promisc_mode();
 	wifi_set_promisc(RTW_PROMISC_ENABLE_2, my_promisc_callback_all, len_used);
 
-	for(ch = 1; ch <= 13; ch ++) {
-		if(wifi_set_channel(ch) == 0)
-			rtl_printf("\n\n\rSwitch to channel(%d)", ch);
+       
+     
+    
+        for(;;){
+	
+		
+		
 
 		start_time = xTaskGetTickCount();
 
@@ -20490,14 +20867,16 @@ static void my_promisc_test_all(int duration, unsigned char len_used)
 			if((current_time - start_time) < (duration * ( ( uint32_t ) 1000 ))) {
 				frame = my_retrieve_frame();
                                 if(frame){
-                                    int i = 0;
-                                    rtl_printf("\n\r |%02X|DA:", frame->type); 
-                                    for(i=0;i<6;i++)
-                                      rtl_printf("%02X",frame->da[i]);
-                                    rtl_printf("|SA:");
-                                    for(i=0;i<6;i++)
-                                      rtl_printf("%02X",frame->sa[i]);
-                                    rtl_printf("|%d|%d|%s\r\n",frame->rssi,ch,frame->ssid);
+                                  
+
+
+
+
+
+
+
+
+ 
                                     _memset(frame ->ssid, 0, sizeof(frame ->ssid));
                                 
                                
@@ -20517,8 +20896,9 @@ static void my_promisc_test_all(int duration, unsigned char len_used)
 
 
 
-                                   
-#line 501 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
+    
+
+#line 881 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
 					vPortFree((void *) frame);
 				}
 				else
@@ -20527,28 +20907,29 @@ static void my_promisc_test_all(int duration, unsigned char len_used)
 			else
 				break;	
 		}
-#line 518 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
+#line 898 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
 	}
+
 
 	wifi_set_promisc(RTW_PROMISC_DISABLE, 0, 0);
 
 	while((frame = my_retrieve_frame()) != 0)
 		vPortFree((void *) frame);
+        company_printf("Task _end \r\n");
 }
 
 void my_promsic_demo(int duration, unsigned char len_used)
 {
-#line 536 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
+#line 918 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
 	wifi_init_packet_filter();
 
-        
         my_promisc_test_all(duration, 0);
         
 }
 void my_cmd_promisc(int argc, char **argv)
 {
 	int duration;
-#line 553 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
+#line 934 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
 	wifi_init_packet_filter();
 
 	if((argc == 2) && ((duration = prvAtoi(argv[1])) > 0))
@@ -20558,5 +20939,5 @@ void my_cmd_promisc(int argc, char **argv)
 		my_promisc_test(duration, 1);
 	else
 		rtl_printf("\n\rUsage: %s DURATION_SECONDS [with_len]", argv[0]);
-#line 568 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
+#line 949 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\my_promic.c"
 }

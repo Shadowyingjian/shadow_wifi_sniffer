@@ -39,9 +39,44 @@
   
 
 extern void promisc_test_all(int duration, unsigned char len_used);
+extern void vdata_init_device(void);
+extern void vdata_init_router(void);
 #define STACKSIZE                   (512 + 768)
 
 xSemaphoreHandle uart_rx_interrupt_sema_wifisniffer = NULL;
+
+//添加这部分是测试定时器
+#include "timer_api.h"
+gtimer_t my_timer1;
+extern uint64_t g_times;
+extern uint64_t timestamp;
+extern uint32_t g_second;
+extern uint16_t seq_channel;
+int set_channel_flag = -1;
+void timer1_timeout_handler( uint32_t id)
+{
+    g_times++;
+    timestamp++;
+    if( g_times % 10 == 0 ){
+      g_second++;
+      printf("\r\n g_second = %d \r\n",g_second);
+    }
+    if( g_times % 3 ==0){
+        seq_channel += 3;
+        if( seq_channel >13 ){
+             seq_channel = 1;
+        }
+    }
+    
+    set_channel_flag = wifi_set_channel(seq_channel);
+    if( set_channel_flag != 0 ){
+      printf("\r\n set channel faild \r\n");
+    }
+    
+    
+
+}
+
 
 
 void wifi_sniffer_init_thread(void *param)
@@ -72,13 +107,21 @@ void wifi_sniffer_init_thread(void *param)
 	start_interactive_mode();
 #endif	
         wifi_init_packet_filter();
+        
+         vdata_init_device();
+         vdata_init_router();
+        //Initial a periodical timer
+        gtimer_init(&my_timer1,TIMER2);
+        
+        gtimer_start_periodical( &my_timer1, 100000, (void*)timer1_timeout_handler,NULL);
+        
         while(1)
         {
           //
          // my_promisc_test_all(3, 0);
          // my_cmd_promisc(3,param);
-          printf("\r\n test:\r\n");
-          my_promsic_demo(3,0);
+          
+          my_promsic_demo(10,0);
         }
 	/* Kill init thread after all init tasks done */
 	vTaskDelete(NULL);
