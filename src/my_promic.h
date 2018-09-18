@@ -13,6 +13,9 @@ struct my_eth_frame{
       unsigned int ssid_len;
       unsigned char data[500];
       unsigned char f_type;
+      unsigned char *ptr_data;
+      
+      
 };
 
 struct my_inic_eth_frame{

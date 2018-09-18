@@ -91,6 +91,7 @@ extern uint32_t SystemCoreClock;
 #define configUSE_TICK_HOOK				0
 #define configCPU_CLOCK_HZ				( SystemCoreClock )
 #define configTICK_RATE_HZ				( ( uint32_t ) 1000 )
+#define configTICK_RATE_HZ2				( ( uint32_t ) 100 )
 #define configSYSTICK_CLOCK_HZ			32768
 #define configMINIMAL_STACK_SIZE		( ( unsigned short ) 512 )
 #ifdef CONFIG_WIFI_EN

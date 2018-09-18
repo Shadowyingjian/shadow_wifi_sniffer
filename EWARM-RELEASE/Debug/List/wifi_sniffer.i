@@ -2697,14 +2697,14 @@ extern uint32_t SystemCoreClock;
 
  
 
-#line 108 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\inc\\FreeRTOSConfig.h"
+#line 109 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\inc\\FreeRTOSConfig.h"
 
 
 
 
 
 
-#line 127 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\inc\\FreeRTOSConfig.h"
+#line 128 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\inc\\FreeRTOSConfig.h"
 
 
 
@@ -2745,10 +2745,10 @@ extern int  freertos_ready_to_sleep();
 
 
  
-#line 176 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\inc\\FreeRTOSConfig.h"
+#line 177 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\inc\\FreeRTOSConfig.h"
 
  
-#line 184 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\inc\\FreeRTOSConfig.h"
+#line 185 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\inc\\FreeRTOSConfig.h"
 
 
 
@@ -18022,6 +18022,9 @@ struct my_eth_frame{
       unsigned int ssid_len;
       unsigned char data[500];
       unsigned char f_type;
+      unsigned char *ptr_data;
+      
+      
 };
 
 struct my_inic_eth_frame{
@@ -18062,8 +18065,7 @@ static struct my_eth_buffer my_eth_buffer;
 
 
 #line 22 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
-   
-#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\mbed\\hal\\serial_api.h"
 
 
 
@@ -18080,3235 +18082,15 @@ static struct my_eth_buffer my_eth_buffer;
 
 
 
- 
-
-
-
-
-
-
-
- 
-
-#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\include\\wifi_constants.h"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-#line 36 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\include\\wifi_constants.h"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-typedef enum
-{
-    RTW_SUCCESS                      = 0,     
-    RTW_PENDING                      = 1,     
-    RTW_TIMEOUT                      = 2,     
-    RTW_PARTIAL_RESULTS              = 3,     
-    RTW_INVALID_KEY                  = 4,     
-    RTW_DOES_NOT_EXIST               = 5,     
-    RTW_NOT_AUTHENTICATED            = 6,     
-    RTW_NOT_KEYED                    = 7,     
-    RTW_IOCTL_FAIL                   = 8,     
-    RTW_BUFFER_UNAVAILABLE_TEMPORARY = 9,     
-    RTW_BUFFER_UNAVAILABLE_PERMANENT = 10,    
-    RTW_WPS_PBC_OVERLAP              = 11,    
-    RTW_CONNECTION_LOST              = 12,    
-
-    RTW_ERROR                        = -1,    
-    RTW_BADARG                       = -2,    
-    RTW_BADOPTION                    = -3,    
-    RTW_NOTUP                        = -4,    
-    RTW_NOTDOWN                      = -5,    
-    RTW_NOTAP                        = -6,    
-    RTW_NOTSTA                       = -7,    
-    RTW_BADKEYIDX                    = -8,    
-    RTW_RADIOOFF                     = -9,    
-    RTW_NOTBANDLOCKED                = -10,   
-    RTW_NOCLK                        = -11,   
-    RTW_BADRATESET                   = -12,   
-    RTW_BADBAND                      = -13,   
-    RTW_BUFTOOSHORT                  = -14,   
-    RTW_BUFTOOLONG                   = -15,   
-    RTW_BUSY                         = -16,   
-    RTW_NOTASSOCIATED                = -17,   
-    RTW_BADSSIDLEN                   = -18,   
-    RTW_OUTOFRANGECHAN               = -19,   
-    RTW_BADCHAN                      = -20,   
-    RTW_BADADDR                      = -21,   
-    RTW_NORESOURCE                   = -22,   
-    RTW_UNSUPPORTED                  = -23,   
-    RTW_BADLEN                       = -24,   
-    RTW_NOTREADY                     = -25,   
-    RTW_EPERM                        = -26,   
-    RTW_NOMEM                        = -27,   
-    RTW_ASSOCIATED                   = -28,   
-    RTW_RANGE                        = -29,   
-    RTW_NOTFOUND                     = -30,   
-    RTW_WME_NOT_ENABLED              = -31,   
-    RTW_TSPEC_NOTFOUND               = -32,   
-    RTW_ACM_NOTSUPPORTED             = -33,   
-    RTW_NOT_WME_ASSOCIATION          = -34,   
-    RTW_SDIO_ERROR                   = -35,   
-    RTW_WLAN_DOWN                    = -36,   
-    RTW_BAD_VERSION                  = -37,   
-    RTW_TXFAIL                       = -38,   
-    RTW_RXFAIL                       = -39,   
-    RTW_NODEVICE                     = -40,   
-    RTW_UNFINISHED                   = -41,   
-    RTW_NONRESIDENT                  = -42,   
-    RTW_DISABLED                     = -43    
-} rtw_result_t;
-
-
-
-
-
- 
-typedef enum {
-    RTW_SECURITY_OPEN           = 0,                                                 
-    RTW_SECURITY_WEP_PSK        = 0x0001,                                       
-    RTW_SECURITY_WEP_SHARED     = ( 0x0001 | 0x00008000 ),                  
-    RTW_SECURITY_WPA_TKIP_PSK   = ( 0x00200000  | 0x0002 ),                  
-    RTW_SECURITY_WPA_AES_PSK    = ( 0x00200000  | 0x0004 ),                   
-    RTW_SECURITY_WPA2_AES_PSK   = ( 0x00400000 | 0x0004 ),                   
-    RTW_SECURITY_WPA2_TKIP_PSK  = ( 0x00400000 | 0x0002 ),                  
-    RTW_SECURITY_WPA2_MIXED_PSK = ( 0x00400000 | 0x0004 | 0x0002 ),    
-    RTW_SECURITY_WPA_WPA2_MIXED = ( 0x00200000  | 0x00400000 ),                 
-
-    RTW_SECURITY_WPS_OPEN       = 0x10000000,                                       
-    RTW_SECURITY_WPS_SECURE     = (0x10000000 | 0x0004),                       
-
-    RTW_SECURITY_UNKNOWN        = -1,                                                
-
-    RTW_SECURITY_FORCE_32_BIT   = 0x7fffffff                                         
-} rtw_security_t;
-
-typedef enum {
-    RTW_ENCRYPTION_UNKNOWN = 0,                 
-    RTW_ENCRYPTION_OPEN = 1,
-    RTW_ENCRYPTION_WEP40 = 2,
-    RTW_ENCRYPTION_WPA_TKIP = 3,
-    RTW_ENCRYPTION_WPA_AES = 4,
-    RTW_ENCRYPTION_WPA2_TKIP = 5,
-    RTW_ENCRYPTION_WPA2_AES = 6,
-    RTW_ENCRYPTION_WPA2_MIXED = 7,
-    RTW_ENCRYPTION_WEP104 = 9,
-    RTW_ENCRYPTION_UNDEF = 0xFF,                 
-} rtw_encryption_t;
-
-typedef enum {
-	RTW_FALSE = 0,
-	RTW_TRUE  = 1
-} rtw_bool_t;
-
-
-
- 
-typedef enum {
-	RTW_802_11_BAND_5GHZ   = 0,  
-	RTW_802_11_BAND_2_4GHZ = 1   
-} rtw_802_11_band_t;
-
-
-
- 
-typedef enum {
-	 
-	RTW_COUNTRY_WORLD1,	
-	RTW_COUNTRY_ETSI1,	
-	RTW_COUNTRY_FCC1,	
-	RTW_COUNTRY_MKK1,	
-	RTW_COUNTRY_ETSI2,	
-	RTW_COUNTRY_FCC2,	
-	RTW_COUNTRY_WORLD2,	
-	RTW_COUNTRY_MKK2,	
-	RTW_COUNTRY_GLOBAL,	
-
-	 
-	RTW_COUNTRY_WORLD,	
-	RTW_COUNTRY_EU,		
-
-	 
-	RTW_COUNTRY_JP,		
-
-	 
-	RTW_COUNTRY_AS,		
-	RTW_COUNTRY_BM,
-	RTW_COUNTRY_CA,
-	RTW_COUNTRY_DM,
-	RTW_COUNTRY_DO,
-	RTW_COUNTRY_FM,
-	RTW_COUNTRY_GD,
-	RTW_COUNTRY_GT,
-	RTW_COUNTRY_GU,
-	RTW_COUNTRY_HT,
-	RTW_COUNTRY_MH,
-	RTW_COUNTRY_MP,
-	RTW_COUNTRY_NI,
-	RTW_COUNTRY_PA,
-	RTW_COUNTRY_PR,
-	RTW_COUNTRY_PW,
-	RTW_COUNTRY_TW,
-	RTW_COUNTRY_US,
-	RTW_COUNTRY_VI,
-
-	 
-	RTW_COUNTRY_AD,		
-	RTW_COUNTRY_AE,
-	RTW_COUNTRY_AF,
-	RTW_COUNTRY_AI,
-	RTW_COUNTRY_AL,
-	RTW_COUNTRY_AM,
-	RTW_COUNTRY_AN,
-	RTW_COUNTRY_AR,
-	RTW_COUNTRY_AT,
-	RTW_COUNTRY_AU,
-	RTW_COUNTRY_AW,
-	RTW_COUNTRY_AZ,
-	RTW_COUNTRY_BA,
-	RTW_COUNTRY_BB,
-	RTW_COUNTRY_BD,
-	RTW_COUNTRY_BE,
-	RTW_COUNTRY_BF,
-	RTW_COUNTRY_BG,
-	RTW_COUNTRY_BH,
-	RTW_COUNTRY_BL,
-	RTW_COUNTRY_BN,
-	RTW_COUNTRY_BO,
-	RTW_COUNTRY_BR,
-	RTW_COUNTRY_BS,
-	RTW_COUNTRY_BT,
-	RTW_COUNTRY_BY,
-	RTW_COUNTRY_BZ,
-	RTW_COUNTRY_CF,
-	RTW_COUNTRY_CH,
-	RTW_COUNTRY_CI,
-	RTW_COUNTRY_CL,
-	RTW_COUNTRY_CN,
-	RTW_COUNTRY_CO,
-	RTW_COUNTRY_CR,
-	RTW_COUNTRY_CX,
-	RTW_COUNTRY_CY,
-	RTW_COUNTRY_CZ,
-	RTW_COUNTRY_DE,
-	RTW_COUNTRY_DK,
-	RTW_COUNTRY_DZ,
-	RTW_COUNTRY_EC,
-	RTW_COUNTRY_EE,
-	RTW_COUNTRY_EG,
-	RTW_COUNTRY_ES,
-	RTW_COUNTRY_ET,
-	RTW_COUNTRY_FI,
-	RTW_COUNTRY_FR,
-	RTW_COUNTRY_GB,
-	RTW_COUNTRY_GE,
-	RTW_COUNTRY_GF,
-	RTW_COUNTRY_GH,
-	RTW_COUNTRY_GL,
-	RTW_COUNTRY_GP,
-	RTW_COUNTRY_GR,
-	RTW_COUNTRY_GY,
-	RTW_COUNTRY_HK,
-	RTW_COUNTRY_HN,
-	RTW_COUNTRY_HR,
-	RTW_COUNTRY_HU,
-	RTW_COUNTRY_ID,
-	RTW_COUNTRY_IE,
-	RTW_COUNTRY_IL,
-	RTW_COUNTRY_IN,
-	RTW_COUNTRY_IQ,
-	RTW_COUNTRY_IR,
-	RTW_COUNTRY_IS,
-	RTW_COUNTRY_IT,
-	RTW_COUNTRY_JM,
-	RTW_COUNTRY_JO,
-	RTW_COUNTRY_KE,
-	RTW_COUNTRY_KH,
-	RTW_COUNTRY_KN,
-	RTW_COUNTRY_KP,
-	RTW_COUNTRY_KR,
-	RTW_COUNTRY_KW,
-	RTW_COUNTRY_KY,
-	RTW_COUNTRY_KZ,
-	RTW_COUNTRY_LA,
-	RTW_COUNTRY_LB,
-	RTW_COUNTRY_LC,
-	RTW_COUNTRY_LI,
-	RTW_COUNTRY_LK,
-	RTW_COUNTRY_LR,
-	RTW_COUNTRY_LS,
-	RTW_COUNTRY_LT,
-	RTW_COUNTRY_LU,
-	RTW_COUNTRY_LV,
-	RTW_COUNTRY_MA,
-	RTW_COUNTRY_MC,
-	RTW_COUNTRY_MD,
-	RTW_COUNTRY_ME,
-	RTW_COUNTRY_MF,
-	RTW_COUNTRY_MK,
-	RTW_COUNTRY_MN,
-	RTW_COUNTRY_MO,
-	RTW_COUNTRY_MQ,
-	RTW_COUNTRY_MR,
-	RTW_COUNTRY_MT,
-	RTW_COUNTRY_MU,
-	RTW_COUNTRY_MV,
-	RTW_COUNTRY_MW,
-	RTW_COUNTRY_MX,
-	RTW_COUNTRY_MY,
-	RTW_COUNTRY_NG,
-	RTW_COUNTRY_NL,
-	RTW_COUNTRY_NO,
-	RTW_COUNTRY_NP,
-	RTW_COUNTRY_NZ,
-	RTW_COUNTRY_OM,
-	RTW_COUNTRY_PE,
-	RTW_COUNTRY_PF,
-	RTW_COUNTRY_PG,
-	RTW_COUNTRY_PH,
-	RTW_COUNTRY_PK,
-	RTW_COUNTRY_PL,
-	RTW_COUNTRY_PM,
-	RTW_COUNTRY_PT,
-	RTW_COUNTRY_PY,
-	RTW_COUNTRY_QA,
-	RTW_COUNTRY_RS,
-	RTW_COUNTRY_RU,
-	RTW_COUNTRY_RW,
-	RTW_COUNTRY_SA,
-	RTW_COUNTRY_SE,
-	RTW_COUNTRY_SG,
-	RTW_COUNTRY_SI,
-	RTW_COUNTRY_SK,
-	RTW_COUNTRY_SN,
-	RTW_COUNTRY_SR,
-	RTW_COUNTRY_SV,
-	RTW_COUNTRY_SY,
-	RTW_COUNTRY_TC,
-	RTW_COUNTRY_TD,
-	RTW_COUNTRY_TG,
-	RTW_COUNTRY_TH,
-	RTW_COUNTRY_TN,
-	RTW_COUNTRY_TR,
-	RTW_COUNTRY_TT,
-	RTW_COUNTRY_TZ,
-	RTW_COUNTRY_UA,
-	RTW_COUNTRY_UG,
-	RTW_COUNTRY_UY,
-	RTW_COUNTRY_UZ,
-	RTW_COUNTRY_VC,
-	RTW_COUNTRY_VE,
-	RTW_COUNTRY_VN,
-	RTW_COUNTRY_VU,
-	RTW_COUNTRY_WF,
-	RTW_COUNTRY_WS,
-	RTW_COUNTRY_YE,
-	RTW_COUNTRY_YT,
-	RTW_COUNTRY_ZA,
-	RTW_COUNTRY_ZW,
-	
-	RTW_COUNTRY_MAX
-
-}rtw_country_code_t;
-
-
-
- 
-typedef enum {
-	RTW_ADAPTIVITY_DISABLE = 0,
-	RTW_ADAPTIVITY_NORMAL,			
-	RTW_ADAPTIVITY_CARRIER_SENSE	
-} rtw_adaptivity_mode_t;
-
-
-
-
- 
-typedef enum {
-	RTW_MODE_NONE = 0,
-	RTW_MODE_STA,
-	RTW_MODE_AP,
-	RTW_MODE_STA_AP,
-	RTW_MODE_PROMISC,
-	RTW_MODE_P2P
-}rtw_mode_t;
-
-typedef enum {
-	RTW_SCAN_FULL = 0,
-	RTW_SCAN_SOCIAL,
-	RTW_SCAN_ONE
-}rtw_scan_mode_t;
-
-
-
- 
-typedef enum {
-	RTW_LINK_DISCONNECTED = 0,
-	RTW_LINK_CONNECTED
-} rtw_link_status_t;
-
-
-
- 
-typedef enum {
-    RTW_SCAN_TYPE_ACTIVE              = 0x00,   
-    RTW_SCAN_TYPE_PASSIVE             = 0x01,   
-    RTW_SCAN_TYPE_PROHIBITED_CHANNELS = 0x04    
-} rtw_scan_type_t;
-
-
-
- 
-typedef enum {
-    RTW_BSS_TYPE_INFRASTRUCTURE = 0,  
-    RTW_BSS_TYPE_ADHOC          = 1,  
-    RTW_BSS_TYPE_ANY            = 2,  
-
-    RTW_BSS_TYPE_UNKNOWN        = -1  
-} rtw_bss_type_t;
-
-typedef enum {
-	RTW_SCAN_COMMAMD = 0x01
-} rtw_scan_command_t;
-
-typedef enum{
-	COMMAND1					= 0x01
-}rtw_command_type;
-
-typedef enum {
-	RTW_WPS_TYPE_DEFAULT 		    	= 0x0000,
-	RTW_WPS_TYPE_USER_SPECIFIED 		= 0x0001,
-	RTW_WPS_TYPE_MACHINE_SPECIFIED   	= 0x0002,
-	RTW_WPS_TYPE_REKEY 			        = 0x0003,
-	RTW_WPS_TYPE_PUSHBUTTON 		    = 0x0004,
-	RTW_WPS_TYPE_REGISTRAR_SPECIFIED 	= 0x0005,
-    RTW_WPS_TYPE_NONE                   = 0x0006,
-    RTW_WPS_TYPE_WSC                    = 0x0007
-} rtw_wps_type_t;
-
-
-
- 
-typedef enum {
-    RTW_NETWORK_B   = 1,
-	RTW_NETWORK_BG  = 3,
-	RTW_NETWORK_BGN = 11
-} rtw_network_mode_t;
-
-
-
- 
-typedef enum {
-    RTW_STA_INTERFACE     = 0,  
-    RTW_AP_INTERFACE      = 1,  
-} rtw_interface_t;
-
-
-
- 
-typedef enum {
-	RTW_POSITIVE_MATCHING  = 0,  
-	RTW_NEGATIVE_MATCHING  = 1   
-} rtw_packet_filter_rule_t;
-
-
-
- 
-typedef enum {
-	RTW_PROMISC_DISABLE = 0,   
-	RTW_PROMISC_ENABLE = 1,    
-	RTW_PROMISC_ENABLE_1 = 2,  
-	RTW_PROMISC_ENABLE_2 = 3,  
-	RTW_PROMISC_ENABLE_3 = 4,  
-} rtw_rcr_level_t;
-
-
-
- 
-typedef enum{
-	RTW_NO_ERROR = 0,
-	RTW_NONE_NETWORK = 1,
-	RTW_CONNECT_FAIL = 2,
-	RTW_WRONG_PASSWORD = 3 ,
-	RTW_4WAY_HANDSHAKE_TIMEOUT = 4,
-	RTW_DHCP_FAIL = 5,
-	RTW_UNKNOWN,
-}rtw_connect_error_flag_t;
-
-typedef enum {
-	RTW_TX_PWR_PERCENTAGE_100 = 0,  
-	RTW_TX_PWR_PERCENTAGE_75 = 1,  
-	RTW_TX_PWR_PERCENTAGE_50 = 2,  
-	RTW_TX_PWR_PERCENTAGE_25 = 3,  
-	RTW_TX_PWR_PERCENTAGE_12_5 = 4,  
-}rtw_tx_pwr_percentage_t;
-
-
-
- 
-typedef enum _WIFI_EVENT_INDICATE{
-	WIFI_EVENT_CONNECT = 0,
-	WIFI_EVENT_DISCONNECT = 1,
-	WIFI_EVENT_FOURWAY_HANDSHAKE_DONE = 2,	
-	WIFI_EVENT_SCAN_RESULT_REPORT = 3,
-	WIFI_EVENT_SCAN_DONE = 4,
-	WIFI_EVENT_RECONNECTION_FAIL = 5,
-	WIFI_EVENT_SEND_ACTION_DONE = 6,
-	WIFI_EVENT_RX_MGNT = 7,
-	WIFI_EVENT_STA_ASSOC = 8,
-	WIFI_EVENT_STA_DISASSOC = 9,
-	WIFI_EVENT_STA_WPS_START = 10,
-	WIFI_EVENT_WPS_FINISH = 11,
-	WIFI_EVENT_EAPOL_START = 12,
-	WIFI_EVENT_EAPOL_RECVD = 13,
-	WIFI_EVENT_NO_NETWORK = 14,
-	WIFI_EVENT_BEACON_AFTER_DHCP = 15,
-	WIFI_EVENT_IP_CHANGED = 16,
-	WIFI_EVENT_MAX,
-}rtw_event_indicate_t;
-
-
-
-
- 
-
-#line 29 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
-#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\include\\wifi_structures.h"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
- 
-
-
-#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\platform\\dlist.h"
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
- 
-
-struct list_head {
-	struct list_head *next, *prev;
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-static inline void __list_add(struct list_head *newitem,
-			      struct list_head *prev,
-			      struct list_head *next)
-{
-	next->prev = newitem;
-	newitem->next = next;
-	newitem->prev = prev;
-	prev->next = newitem;
-}
-
-
-
-
-
-
-
-
- 
-static inline void list_add(struct list_head *newitem, struct list_head *head)
-{
-	__list_add(newitem, head, head->next);
-}
-
-
-
-
-
-
-
-
- 
-static inline void list_add_tail(struct list_head *newitem, struct list_head *head)
-{
-	__list_add(newitem, head->prev, head);
-}
-
-
-
-
-
-
-
- 
-static inline void __list_del(struct list_head *prev, struct list_head *next)
-{
-	next->prev = prev;
-	prev->next = next;
-}
-
-
-
-
-
- 
-static inline void list_del(struct list_head *entry)
-{
-	__list_del(entry->prev, entry->next);
-	entry->next = (struct list_head *) 0;
-	entry->prev = (struct list_head *) 0;
-}
-
-
-
-
- 
-static inline void list_del_init(struct list_head *entry)
-{
-	__list_del(entry->prev, entry->next);
-	do { (entry)->next = (entry); (entry)->prev = (entry); } while (0); 
-}
-
-
-
-
-
- 
-static inline void list_move(struct list_head *list, struct list_head *head)
-{
-        __list_del(list->prev, list->next);
-        list_add(list, head);
-}
-
-
-
-
-
- 
-static inline void list_move_tail(struct list_head *list,
-				  struct list_head *head)
-{
-        __list_del(list->prev, list->next);
-        list_add_tail(list, head);
-}
-
-
-
-
- 
-static inline int list_empty(struct list_head *head)
-{
-	return head->next == head;
-}
-
-static inline void __list_splice(struct list_head *list,
-				 struct list_head *head)
-{
-	struct list_head *first = list->next;
-	struct list_head *last = list->prev;
-	struct list_head *at = head->next;
-
-	first->prev = head;
-	head->next = first;
-
-	last->next = at;
-	at->prev = last;
-}
-
-
-
-
-
- 
-static inline void list_splice(struct list_head *list, struct list_head *head)
-{
-	if (!list_empty(list))
-		__list_splice(list, head);
-}
-
-
-
-
-
-
-
- 
-static inline void list_splice_init(struct list_head *list,
-				    struct list_head *head)
-{
-	if (!list_empty(list)) {
-		__list_splice(list, head);
-		do { (list)->next = (list); (list)->prev = (list); } while (0);
-	}
-}
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
- 
-
-
-
-        	
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-#line 29 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\include\\wifi_structures.h"
-
-
-
-
-
-#pragma pack(1)
-
-
-
-
- 
-typedef struct rtw_ssid {
-    unsigned char len;      
-    unsigned char val[33];  
-} rtw_ssid_t;
-
-#pragma pack()
-
-
-
-#pragma pack(1)
-
-
-
-
- 
-typedef struct rtw_mac {
-    unsigned char octet[6];  
-} rtw_mac_t;
-
-#pragma pack()
-
-
-
-
-
-
-
- 
-typedef struct rtw_ap_info {
-	rtw_ssid_t 			ssid;
-	rtw_security_t		security_type;
-	unsigned char 		*password;
-	int 				password_len;
-	int					channel;
-}rtw_ap_info_t;
-
-
-
-
-
-
- 
-typedef struct rtw_network_info {
-	rtw_ssid_t 			ssid;
-	rtw_mac_t			bssid;
-	rtw_security_t		security_type;
-	unsigned char 		*password;
-	int 				password_len;
-	int					key_id;
-}rtw_network_info_t;
-
-
-#pragma pack(1)
-
-
-
-
- 
-typedef struct rtw_scan_result {
-    rtw_ssid_t              SSID;              
-    rtw_mac_t               BSSID;             
-    signed short		                  signal_strength;   
-    rtw_bss_type_t          bss_type;          
-    rtw_security_t          security;          
-    rtw_wps_type_t          wps_type;          
-    unsigned int                      channel;           
-    rtw_802_11_band_t       band;                                                      
-} rtw_scan_result_t;
-
-#pragma pack()
-
-
-
-
- 
-typedef struct rtw_scan_handler_result {
-    rtw_scan_result_t ap_details;
-    rtw_bool_t        scan_complete;
-    void*               user_data;
-
-} rtw_scan_handler_result_t;
-
-
-#pragma pack(1)
-
-
-
-
- 
-typedef struct rtw_wifi_setting {
-	rtw_mode_t		mode;
-	unsigned char 		ssid[33];
-	unsigned char		channel;
-	rtw_security_t		security_type;
-	unsigned char 		password[65];
-	unsigned char		key_idx;
-}rtw_wifi_setting_t;
-
-#pragma pack()
-
-
-
-
- 
-typedef struct rtw_wifi_config {
-	unsigned int		boot_mode;
-	unsigned char 		ssid[32];
-	unsigned char		ssid_len;
-	unsigned char		security_type;
-	unsigned char		password[65];
-	unsigned char		password_len;
-	unsigned char		channel;
-} rtw_wifi_config_t;
-
-
-
- 
-typedef struct
-{
-    unsigned int    count;          
-    rtw_mac_t mac_list[1];    
-} rtw_maclist_t;
-
-
-
-
-
- 
-typedef struct {
-    unsigned int      version;                 
-    unsigned int      length;                  
-                                           
-    rtw_mac_t     BSSID;
-    unsigned short      beacon_period;           
-    unsigned short      capability;              
-    unsigned char       SSID_len;
-    unsigned char       SSID[32];
-    unsigned char       channel;
-
-
-
-
-
-    unsigned short      atim_window;             
-    unsigned char       dtim_period;             
-    signed short       RSSI;                    
-
-    unsigned char       n_cap;                   
-    unsigned int      nbss_cap;                
-    unsigned char       basic_mcs[16];   
-
-    unsigned short      ie_offset;               
-    unsigned int      ie_length;              
-} rtw_bss_info_t;
-
-
-
- 
-typedef struct {
-	unsigned short	offset;      
-	unsigned short	mask_size;   
-	unsigned char*	mask;        
-	unsigned char*	pattern;     
-} rtw_packet_filter_pattern_t;
-
-typedef struct ieee80211_frame_info{
-	unsigned short i_fc;
-	unsigned short i_dur;
-	unsigned char i_addr1[6];
-	unsigned char i_addr2[6];
-	unsigned char i_addr3[6];
-	unsigned short i_seq;
-	unsigned char bssid[6];
-	unsigned char encrypt;
-	signed char rssi;
-}ieee80211_frame_info_t;
-
-typedef struct {
-	char filter_id;
-	rtw_packet_filter_pattern_t patt;
-	rtw_packet_filter_rule_t rule;
-	unsigned char enable;
-}rtw_packet_filter_info_t;
-
-typedef struct rtw_mac_filter_list{
-	struct list_head node;
-	unsigned char mac_addr[6];
-}rtw_mac_filter_list_t;
-
-
-
-
-
- 
-
-#line 30 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
-#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_util.h"
-
-
-
-#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
-
-
-
-
-
-
- 
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
- 
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
- 
-typedef unsigned char __u8;
-typedef char __s8;
-typedef unsigned short __u16;
-typedef short __s16;
-typedef unsigned int __u32;
-typedef int __s32;
-typedef	unsigned long long __u64;
-typedef	long long __i64;
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
- 
- 
-
-
-
-
- 
- 
-
-
- 
-
- 
-
-
-
-
- 
-
- 
-#line 285 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
- 
-#line 293 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
- 
-
- 
-
-
-
-
-
- 
-
-
-
-
-
-
- 
-
-
-
-
-
-
- 
-
- 
-#line 329 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
- 
-
-
- 
-
-
- 
-
-
-
-
-
-
-
-
-
- 
-
-
-
- 
-
-
- 
-
-
-
- 
-
-
-
- 
-
-
- 
-
-
- 
-
- 
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
- 
-
- 
-
-
-
-
- 
-
-
-
- 
- 
- 
-
-#line 445 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
-
-
-
- 
-
-
- 
-
-
-
-
- 
-
-#line 466 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
-
-
-
-
-
-
-
- 
-
- 
-
- 
-
-
-
- 
-
- 
-
-
- 
-
-
- 
-
- 
-
-
-
- 
-
-
- 
-
-
- 
-#line 510 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
- 
-#line 522 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
- 
-
-
-
-
- 
-
-
- 
-
-
- 
-#line 544 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
- 
-#line 561 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
- 
-
-
-
-
-
-
- 
-#line 580 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
- 
-#line 591 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
- 
-
-
- 
-
-
- 
-
-
- 
-
-
- 
-
-
-
-
-
- 
-
-
-
-
-
- 
-#line 627 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
- 
-
-
-
-
- 
-
-
-
-
-
-
- 
-
-
-
- 
-
-
-
-
- 
-
-
-
-
- 
-
- 
-
-
-
-
- 
-
-
-
-
-
- 
-#line 674 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
- 
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
- 
-
-
-
-
- 
-
-
-
- 
-#line 713 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
- 
-
-
- 
-
-
-
-
- 
-
- 
-
-struct sockaddr_t {
-  __u8 sa_len;
-  __u8 sa_family;
-  char sa_data[14];
-};
-
-
-
- 
-struct	iw_param
-{
-  __s32		value;		 
-  __u8		fixed;		 
-  __u8		disabled;	 
-  __u16		flags;		 
-};
-
-
-
-
- 
-struct	iw_point
-{
-  void		*pointer;	 
-  __u16		length;		 
-  __u16		flags;		 
-};
-
-
-
-
-
-
-
-
- 
-struct	iw_freq
-{
-	__s32		m;		 
-	__s16		e;		 
-	__u8		i;		 
-	__u8		flags;		 
-};
-
-
-
- 
-struct	iw_quality
-{
-	__u8		qual;		
- 
-	__u8		level;		 
-	__u8		noise;		 
-	__u8		updated;	 
-};
-
-
-
-
-
-
-
- 
-struct	iw_discarded
-{
-	__u32		nwid;		 
-	__u32		code;		 
-	__u32		fragment;	 
-	__u32		retries;	 
-	__u32		misc;		 
-};
-
-
-
-
- 
-struct	iw_missed
-{
-	__u32		beacon;		 
-};
-
-
-
- 
-struct	iw_thrspy
-{
-	struct sockaddr_t		addr;		 
-	struct iw_quality	qual;		 
-	struct iw_quality	low;		 
-	struct iw_quality	high;		 
-};
-
-
-
-
-
-
-
-
-
-
-
- 
-struct	iw_scan_req
-{
-	__u8		scan_type;  
-	__u8		essid_len;
-	__u8		num_channels; 
- 
-	__u8		flags; 
-
- 
-	struct sockaddr_t	bssid; 
- 
-
-	
-
-
-
-
- 
-	__u8		essid[32];
-
-	
-
-
-
-
-
-
-
-
- 
-	__u32		min_channel_time;  
-	__u32		max_channel_time;  
-
-	struct iw_freq	channel_list[32];
-};
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-struct	iw_encode_ext
-{
-	__u32		ext_flags;  
-	__u8		tx_seq[8];  
-	__u8		rx_seq[8];  
-	struct sockaddr_t	addr; 
-
- 
-	__u16		alg;  
-	__u16		key_len;
-
-
-
-	__u8		key[0];
-
-};
-
- 
-struct	iw_mlme
-{
-	__u16		cmd;  
-	__u16		reason_code;
-	struct sockaddr_t	addr;
-};
-
- 
-
-
-
-
-
-
-struct	iw_pmksa
-{
-	__u32		cmd;  
-	struct sockaddr_t	bssid;
-	__u8		pmkid[16];
-};
-
- 
-struct	iw_michaelmicfailure
-{
-	__u32		flags;
-	struct sockaddr_t	src_addr;
-	__u8		tsc[8];  
-};
-
- 
-
-struct	iw_pmkid_cand
-{
-	__u32		flags;  
-	__u32		index; 
- 
-	struct sockaddr_t	bssid;
-};
-
- 
-
-
- 
-struct	iw_statistics
-{
-	__u16		status;		
- 
-
-	struct iw_quality	qual;		
- 
-	struct iw_discarded	discard;	 
-	struct iw_missed	miss;		 
-};
-
- 
-
-
-
-
-
-
-
-
-
- 
-union	iwreq_data
-{
-	 
-	char		name[16];
-	
- 
-
-	struct iw_point	essid;		 
-	struct iw_param	nwid;		 
-	struct iw_freq	freq;		
-
- 
-
-	struct iw_param	sens;		 
-	struct iw_param	bitrate;	 
-	struct iw_param	txpower;	 
-	struct iw_param	rts;		 
-	struct iw_param	frag;		 
-	__u32		mode;		 
-	struct iw_param	retry;		 
-
-	struct iw_point	encoding;	 
-	struct iw_param	power;		 
-	struct iw_quality qual;		 
-
-	struct sockaddr_t	ap_addr;	 
-	struct sockaddr_t	addr;		 
-
-	struct iw_param	param;		 
-	struct iw_point	data;		 
-	struct iw_point	passphrase;		 
-};
-
-
-
-
-
-
- 
-struct	iwreq 
-{
-#line 1020 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-	char	ifr_name[16];	 
-
-	 
-	union	iwreq_data	u;
-};
-
- 
-
-
-
- 
-
-
-
- 
-
-struct	iw_range
-{
-	 
-	__u32		throughput;	 
-	
-
-
-
-
- 
-
-	 
-	__u32		min_nwid;	 
-	__u32		max_nwid;	 
-
-	 
-	__u16		old_num_channels;
-	__u8		old_num_frequency;
-
-	 
-	__u32		event_capa[6];
-
-	 
-	__s32		sensitivity;
-
-	 
-	
-
-
- 
-	struct iw_quality	max_qual;	 
-	
-
-
-
-
-
-
-
- 
-	struct iw_quality	avg_qual;	 
-
-	 
-	__u8		num_bitrates;	 
-	__s32		bitrate[32];	 
-
-	 
-	__s32		min_rts;	 
-	__s32		max_rts;	 
-
-	 
-	__s32		min_frag;	 
-	__s32		max_frag;	 
-
-	 
-	__s32		min_pmp;	 
-	__s32		max_pmp;	 
-	__s32		min_pmt;	 
-	__s32		max_pmt;	 
-	__u16		pmp_flags;	 
-	__u16		pmt_flags;	 
-	__u16		pm_capa;	 
-
-	 
-	__u16	encoding_size[8];	 
-	__u8	num_encoding_sizes;	 
-	__u8	max_encoding_tokens;	 
-	 
-	__u8	encoding_login_index;	 
-
-	 
-	__u16		txpower_capa;	 
-	__u8		num_txpower;	 
-	__s32		txpower[8];	 
-
-	 
-	__u8		we_version_compiled;	 
-	__u8		we_version_source;	 
-
-	 
-	__u16		retry_capa;	 
-	__u16		retry_flags;	 
-	__u16		r_time_flags;	 
-	__s32		min_retry;	 
-	__s32		max_retry;	 
-	__s32		min_r_time;	 
-	__s32		max_r_time;	 
-
-	 
-	__u16		num_channels;	 
-	__u8		num_frequency;	 
-	struct iw_freq	freq[32];	 
-	
- 
-
-	__u32		enc_capa;	 
-
-	 
-	__s32		min_pms;	 
-	__s32		max_pms;	 
-	__u16		pms_flags;	 
-
-	 
-	__s32		modul_capa;	 
-
-	 
-	__u32		bitrate_capa;	 
-};
-
-
-
- 
- 
-struct	iw_priv_args
-{
-	__u32		cmd;		 
-	__u16		set_args;	 
-	__u16		get_args;	 
-	char		name[16];	 
-};
-
- 
-
-
-
-
- 
-
-
-
- 
-struct iw_event
-{
-	__u16		len;			 
-	__u16		cmd;			 
-	union iwreq_data	u;		 
-};
-
- 
-
- 
-#line 1183 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
-
-
- 
-
-
-
-
-
- 
-
- 
-#line 1202 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
-
-#line 5 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_util.h"
-#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wlan_intf.h"
-
-
-
-
-
-
-
-
-
-
-
-#line 21 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wlan_intf.h"
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
- 
-
-
-
-
-int rltk_wlan_init(int idx_wlan, rtw_mode_t mode);				
-void rltk_wlan_deinit(void);
-void rltk_wlan_deinit_fastly(void);
-int rltk_wlan_start(int idx_wlan);
-void rltk_wlan_statistic(unsigned char idx);
-unsigned char rltk_wlan_running(unsigned char idx);		
-int rltk_wlan_control(unsigned long cmd, void *data);
-int rltk_wlan_handshake_done(void);
-int rltk_wlan_rf_on(void);
-int rltk_wlan_rf_off(void);
-int rltk_wlan_check_bus(void);
-int rltk_wlan_wireless_mode(unsigned char mode);
-int rltk_wlan_set_wps_phase(unsigned char is_trigger_wps);
-int rtw_ps_enable(int enable);
-int rltk_wlan_is_connected_to_ap(void);
-
-
-
-
-
-
-
-
-#line 6 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_util.h"
-
-
-
-
-
-
-
-int wext_get_ssid(const char *ifname, __u8 *ssid);
-int wext_set_ssid(const char *ifname, const __u8 *ssid, __u16 ssid_len);
-int wext_set_bssid(const char *ifname, const __u8 *bssid);
-int wext_get_bssid(const char *ifname, __u8 *bssid);
-int wext_set_auth_param(const char *ifname, __u16 idx, __u32 value);
-int wext_set_key_ext(const char *ifname, __u16 alg, const __u8 *addr, int key_idx, int set_tx, const __u8 *seq, __u16 seq_len, __u8 *key, __u16 key_len);
-int wext_get_enc_ext(const char *ifname, __u16 *alg, __u8 *key_idx, __u8 *passphrase);
-int wext_set_passphrase(const char *ifname, const __u8 *passphrase, __u16 passphrase_len);
-int wext_get_passphrase(const char *ifname, __u8 *passphrase);
-int wext_set_mode(const char *ifname, int mode);
-int wext_get_mode(const char *ifname, int *mode);
-int wext_set_ap_ssid(const char *ifname, const __u8 *ssid, __u16 ssid_len);
-int wext_set_country(const char *ifname, rtw_country_code_t country_code);
-int wext_get_rssi(const char *ifname, int *rssi);
-int wext_set_channel(const char *ifname, __u8 ch);
-int wext_get_channel(const char *ifname, __u8 *ch);
-int wext_register_multicast_address(const char *ifname, rtw_mac_t *mac);
-int wext_unregister_multicast_address(const char *ifname, rtw_mac_t *mac);
-int wext_set_scan(const char *ifname, char *buf, __u16 buf_len, __u16 flags);
-int wext_get_scan(const char *ifname, char *buf, __u16 buf_len);
-int wext_set_mac_address(const char *ifname, char * mac);
-int wext_get_mac_address(const char *ifname, char * mac);
-int wext_enable_powersave(const char *ifname, __u8 lps_mode, __u8 ips_mode);
-int wext_disable_powersave(const char *ifname);
-int wext_set_tdma_param(const char *ifname, __u8 slot_period, __u8 rfon_period_len_1, __u8 rfon_period_len_2, __u8 rfon_period_len_3);
-int wext_set_lps_dtim(const char *ifname, __u8 lps_dtim);
-int wext_get_lps_dtim(const char *ifname, __u8 *lps_dtim);
-int wext_get_tx_power(const char *ifname, __u8 *poweridx);
-int wext_set_txpower(const char *ifname, int poweridx);
-int wext_get_associated_client_list(const char *ifname, void * client_list_buffer, __u16 buffer_length);
-int wext_get_ap_info(const char *ifname, rtw_bss_info_t * ap_info, rtw_security_t* security);
-int wext_mp_command(const char *ifname, char *cmd, int show_msg);
-int wext_private_command(const char *ifname, char *cmd, int show_msg);
-int wext_private_command_with_retval(const char *ifname, char *cmd, char *ret_buf, int ret_len);
-void wext_wlan_indicate(unsigned int cmd, union iwreq_data *wrqu, char *extra);
-int wext_set_pscan_channel(const char *ifname, __u8 *ch, __u8 *pscan_config, __u8 length);
-int wext_set_autoreconnect(const char *ifname, __u8 mode, __u8 retry_times, __u16 timeout);
-int wext_get_autoreconnect(const char *ifname, __u8 *mode);
-int wext_set_adaptivity(rtw_adaptivity_mode_t adaptivity_mode);
-int wext_set_adaptivity_th_l2h_ini(__u8 l2h_threshold);
-int wext_get_auto_chl(const char *ifname, unsigned char *channel_set, unsigned char channel_num);
-int wext_set_sta_num(unsigned char ap_sta_num);
-int wext_del_station(const char *ifname, unsigned char* hwaddr);
-int wext_init_mac_filter(void);
-int wext_deinit_mac_filter(void);
-int wext_add_mac_filter(unsigned char* hwaddr);
-int wext_del_mac_filter(unsigned char* hwaddr);
-void wext_set_indicate_mgnt(int enable);
-
-int wext_add_custom_ie(const char *ifname, void * cus_ie, int ie_num);
-int wext_update_custom_ie(const char *ifname, void * cus_ie, int ie_index);
-int wext_del_custom_ie(const char *ifname);
-
-
-
-
-int wext_send_mgnt(const char *ifname, char *buf, __u16 buf_len, __u16 flags);
-int wext_send_eapol(const char *ifname, char *buf, __u16 buf_len, __u16 flags);
-int wext_set_gen_ie(const char *ifname, char *buf, __u16 buf_len, __u16 flags);
-
-
-
-
-
-#line 31 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
-#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_ind.h"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-  
-
-
-
-
-
-
-
- 
- 
-#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_conf.h"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-#line 884 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_conf.h"
-
-
-#line 27 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_ind.h"
-
-typedef void (*rtw_event_handler_t)(char *buf, int buf_len, int flags, void* handler_user_data );
-
-typedef struct
-{
-
-	rtw_event_handler_t	handler;
-	void*	handler_user_data;
-} event_list_elem_t;
-
-
-
-
-
-
-
- 
-void init_event_callback_list(void);
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-extern void wifi_indication( rtw_event_indicate_t event, char *buf, int buf_len, int flags);
-
-
-
-
-
-
-
-
-
-
-
-
- 
-extern void wifi_reg_event_handler(unsigned int event_cmds, rtw_event_handler_t handler_func, void *handler_user_data);
-
-
-
-
-
-
-
-
-
- 
-extern void wifi_unreg_event_handler(unsigned int event_cmds, rtw_event_handler_t handler_func);
-
- 
-
-
-
-#line 32 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-#line 57 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
- 
-typedef void (*rtw_scan_result_callback_t)( rtw_scan_result_t** result_ptr, void* user_data );
-typedef rtw_result_t (*rtw_scan_result_handler_t)( rtw_scan_handler_result_t* malloced_scan_result );
-
-
-
- 
-typedef struct {
-	char *buf;
-	int buf_len;
-} scan_buf_arg;
-
-
-
- 
-typedef struct internal_scan_handler{
-	rtw_scan_result_t** pap_details;
-	rtw_scan_result_t * ap_details;
-	int	scan_cnt;
-	rtw_bool_t	scan_complete;
-	unsigned char	max_ap_size;
-	rtw_scan_result_handler_t gscan_result_handler;
-
-
-
-	int 	scan_running;
-
-	void*	user_data;
-	unsigned int	scan_start_time;
-} internal_scan_handler_t;
-
-typedef struct {
-    rtw_network_info_t	network_info;
-    void *join_sema;
-} internal_join_result_t;
-
-
-
- 
-
-
-
-
-
-
- 
-int wifi_manager_init(void);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_connect(
-	char 				*ssid,
-	rtw_security_t	security_type,
-	char 				*password,
-	int 				ssid_len,
-	int 				password_len,
-	int 				key_id,
-	void 				*semaphore);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_connect_bssid(
-	unsigned char 		bssid[6],
-	char 				*ssid,
-	rtw_security_t	security_type,
-	char 				*password,
-	int 				bssid_len,
-	int 				ssid_len,
-	int 				password_len,
-	int 				key_id,
-	void 				*semaphore);
-
-
-
-
-
-
- 
-int wifi_disconnect(void);
-
-
-
-
-
-
- 
-int wifi_is_connected_to_ap(void);
-
-
-
-
-
- 
-int wifi_is_up(rtw_interface_t interface);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_is_ready_to_transceive(rtw_interface_t interface);
-
-
-
-
-
- 
-int wifi_set_mac_address(char * mac);
-
-
-
-
-
-
- 
-int wifi_get_mac_address(char * mac);
-
-
-
-
-
- 
-int wifi_enable_powersave(void);
-
-
-
-
-
- 
-int wifi_disable_powersave(void);
-
-
-
-
-
-
-
- 
-int wifi_get_txpower(int *poweridx);
-
-
-
-
-
-
- 
-int wifi_set_txpower(int poweridx);
-
-
-
-
-
-
-
- 
-int wifi_get_associated_client_list(void * client_list_buffer, unsigned short buffer_length);
-
-
-
-
-
-
- 
-int wifi_get_ap_bssid(unsigned char *bssid);
-
-
-
-
-
-
-
- 
-int wifi_get_ap_info(rtw_bss_info_t * ap_info, rtw_security_t* security);
-
-
-
-
-
-
- 
-int wifi_set_country(rtw_country_code_t country_code);
-
-
-
-
-
-
- 
-int wifi_get_rssi(int *pRSSI);
-
-
-
-
-
-
-
- 
-int wifi_set_channel(int channel);
-
-
-
-
-
-
-
- 
-int wifi_get_channel(int *channel);
-
-
-
-
-
-
-
-
-
- 
-int wifi_register_multicast_address(rtw_mac_t *mac);
-
-
-
-
-
-
-
-
- 
-int wifi_unregister_multicast_address(rtw_mac_t *mac);
-
-
-
-
-
-
- 
-__weak void wifi_set_mib(void);
-
-
-
-
-
-
- 
-
-__weak void wifi_set_country_code(void);
-
-
-
-
-
-
- 
-int wifi_rf_on(void);
-
-
-
-
-
-
- 
-int wifi_rf_off(void);
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_on(rtw_mode_t mode);
-
-
-
-
-
-
-
- 
-int wifi_off(void);
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_off_fastly(void);
-
-
-
-
-
-
-
-
-
- 
- 
-int wifi_set_power_mode(unsigned char ips_mode, unsigned char lps_mode);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_set_tdma_param(unsigned char slot_period, unsigned char rfon_period_len_1, unsigned char rfon_period_len_2, unsigned char rfon_period_len_3);
-
-
-
-
-
-
-
- 
-int wifi_set_lps_dtim(unsigned char dtim);
-
-
-
-
-
-
-
- 
-int wifi_get_lps_dtim(unsigned char *dtim);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_start_ap(
-	char 				*ssid,
-	rtw_security_t		security_type,
-	char 				*password,
-	int 				ssid_len,
-	int 				password_len,
-	int					channel);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_start_ap_with_hidden_ssid(
-	char 				*ssid,
-	rtw_security_t		security_type,
-	char 				*password,
-	int 				ssid_len,
-	int 				password_len,
-	int					channel);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_scan(rtw_scan_type_t                    scan_type,
-				  rtw_bss_type_t                     bss_type,
-				  void*                result_ptr);
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_scan_networks(rtw_scan_result_handler_t results_handler, void* user_data);
-
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_scan_networks_with_ssid(int (results_handler)(char*, int, char *, void *), void* user_data, int scan_buflen, char* ssid, int ssid_len);
-
-
-
-
-
-
-
-
-
- 
-int wifi_set_pscan_chan(__u8 * channel_list,__u8 * pscan_config, __u8 length);
-
-
-
-
-
-
- 
-int wifi_get_setting(const char *ifname,rtw_wifi_setting_t *pSetting);
-
-
-
-
-
-
- 
-int wifi_show_setting(const char *ifname,rtw_wifi_setting_t *pSetting);
-
-
-
-
-
-
-
-
- 
-int wifi_set_network_mode(rtw_network_mode_t mode);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_set_promisc(rtw_rcr_level_t enabled, void (*callback)(unsigned char*, unsigned int, void*), unsigned char len_used);
-
-
-
-
-
- 
-void wifi_enter_promisc_mode(void);
-
-
-
-
-
-
- 
-int wifi_set_wps_phase(unsigned char is_trigger_wps);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_restart_ap(
-	unsigned char 		*ssid,
-	rtw_security_t		security_type,
-	unsigned char 		*password,
-	int 				ssid_len,
-	int 				password_len,
-	int					channel);
-
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_config_autoreconnect(__u8 mode, __u8 retry_times, __u16 timeout);
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_set_autoreconnect(__u8 mode);
-
-
-
-
-
-
-
- 
-int wifi_get_autoreconnect(__u8 *mode);
-
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_get_last_error(void);
-
-
-
-
-
-
-
-
-
-
-
- 
-typedef enum CUSTOM_IE_TYPE{
-	PROBE_REQ = (1<<(0)),
-	PROBE_RSP = (1<<(1)),
-	BEACON	  = (1<<(2)),
-}rtw_custom_ie_type_t;
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
- 
-typedef struct _cus_ie{
-	__u8 *ie;
-	__u8 type;
-}rtw_custom_ie_t, *p_rtw_custom_ie_t;
-
-
-
-
-
-
-
-
-
-
- 
-int wifi_add_custom_ie(void *cus_ie, int ie_num);
-
-
-
-
-
-
-
-
- 
-int wifi_update_custom_ie(void *cus_ie, int ie_index);
-
-
-
-
-
-
-
- 
-int wifi_del_custom_ie(void);
-
-
-
-
-
-
-
-
- 
-void wifi_init_packet_filter(void);
-
-
-
-
-
-
-
-
- 
-int wifi_add_packet_filter(unsigned char filter_id, rtw_packet_filter_pattern_t *patt, rtw_packet_filter_rule_t rule);
-
-
-
-
-
-
- 
-int wifi_enable_packet_filter(unsigned char filter_id);
-
-
-
-
-
- 
-int wifi_disable_packet_filter(unsigned char filter_id);
-
-
-
-
 
- 
-int wifi_remove_packet_filter(unsigned char filter_id);
-
-
-
-
-
-
- 
-
-
-
-
-void wifi_set_indicate_mgnt(int enable);
-
-
-
-
 
 
 
 
 
- 
-void wifi_set_ap_polling_sta(__u8 enabled);
-
-
-
 
-
  
-
-
-
-
-#line 25 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
-#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\test\\wlan/wlan_test_inc.h"
-
-#line 22 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\test\\wlan/wlan_test_inc.h"
-
-
-#line 28 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
-
-
-
-
 
-
-#line 40 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
-
-  
-
-extern void promisc_test_all(int duration, unsigned char len_used);
-extern void vdata_init_device(void);
-extern void vdata_init_router(void);
-extern void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* userdata);
-extern void my_promisc_test_all_v2();
-
-
-
-
-SemaphoreHandle_t uart_rx_interrupt_sema_wifisniffer = 0;
-
-
-#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\mbed\\hal\\timer_api.h"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
 
 
 
@@ -34709,7 +31491,3670 @@ struct gdma_s {
 
 #line 47 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\mbed\\targets\\hal\\rtl8711b\\device.h"
 
-#line 29 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\mbed\\hal\\timer_api.h"
+#line 30 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\mbed\\hal\\serial_api.h"
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+typedef enum {
+	ParityNone = 0,		 
+	ParityOdd = 1,		 
+	ParityEven = 2,		 
+	ParityForced1 = 3,	 
+	ParityForced0 = 4	 
+} SerialParity;
+
+
+
+
+ 
+typedef enum {
+	RxIrq,		 
+	TxIrq		 
+} SerialIrq;
+
+
+
+
+ 
+typedef enum {
+	FlowControlNone,	 
+	FlowControlRTS,		 
+	FlowControlCTS,		 
+	FlowControlRTSCTS	 
+} FlowControl;
+
+typedef void (*uart_irq_handler)(uint32_t id, SerialIrq event);
+
+typedef struct serial_s serial_t;
+
+
+
+
+
+
+
+ 
+void serial_init(serial_t *obj, PinName tx, PinName rx);
+
+
+
+
+
+ 
+void serial_free(serial_t *obj);
+
+
+
+
+
+
+ 
+void serial_baud(serial_t *obj, int baudrate);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+void serial_format(serial_t *obj, int data_bits, SerialParity parity, int stop_bits);
+
+
+
+
+
+
+
+ 
+void serial_irq_handler(serial_t *obj, uart_irq_handler handler, uint32_t id);
+
+
+
+
+
+
+
+
+
+
+
+ 
+void serial_irq_set(serial_t *obj, SerialIrq irq, uint32_t enable);
+
+
+
+
+
+
+ 
+int  serial_getc(serial_t *obj);
+
+
+
+
+
+
+
+ 
+void serial_putc(serial_t *obj, int c);
+
+
+
+
+
+
+ 
+int  serial_readable(serial_t *obj);
+
+
+
+
+
+
+ 
+int  serial_writable(serial_t *obj);
+
+
+
+
+
+ 
+void serial_clear(serial_t *obj);
+
+
+
+
+
+ 
+void serial_break_set(serial_t *obj);
+
+
+
+
+
+ 
+void serial_break_clear(serial_t *obj);
+
+
+
+
+
+ 
+void serial_pinout_tx(PinName tx);
+
+
+
+
+
+
+
+
+ 
+void serial_set_flow_control(serial_t *obj, FlowControl type, PinName rxflow, PinName txflow);
+
+
+
+ 
+
+
+
+
+#line 23 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\mbed\\hal_ext\\serial_ex_api.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+ 
+typedef enum {
+    FifoLv1Byte=0,     
+    FifoLvQuarter=1,   
+    FifoLvHalf=2,      
+    FifoLvFull=3       
+} SerialFifoLevel;
+
+
+
+
+
+ 
+void serial_clear_tx(serial_t *obj);
+
+
+
+
+
+ 
+void serial_clear_rx(serial_t *obj);
+
+
+
+
+
+
+
+
+ 
+void serial_send_comp_handler(serial_t *obj, void *handler, uint32_t id);
+
+
+
+
+
+
+
+
+ 
+void serial_recv_comp_handler(serial_t *obj, void *handler, uint32_t id);
+
+
+
+
+
+
+
+
+
+ 
+int32_t serial_recv_blocked(serial_t *obj, char *prxbuf, uint32_t len, uint32_t timeout_ms);
+
+
+
+
+
+
+
+
+
+ 
+int32_t serial_send_blocked(serial_t *obj, char *ptxbuf, uint32_t len, uint32_t timeout_ms);
+
+
+
+
+
+
+
+
+ 
+int32_t serial_recv_stream(serial_t *obj, char *prxbuf, uint32_t len);
+
+
+
+
+
+
+
+
+ 
+int32_t serial_send_stream(serial_t *obj, char *ptxbuf, uint32_t len);
+
+
+
+
+
+
+
+
+ 
+int32_t serial_recv_stream_dma(serial_t *obj, char *prxbuf, uint32_t len);
+
+
+
+
+
+
+
+
+ 
+int32_t serial_send_stream_dma(serial_t *obj, char *ptxbuf, uint32_t len);
+
+
+
+
+
+ 
+int32_t serial_send_stream_abort(serial_t *obj);
+
+
+
+
+
+ 
+int32_t serial_recv_stream_abort(serial_t *obj);
+
+
+
+
+
+ 
+void serial_disable(serial_t *obj);
+
+
+
+
+
+ 
+void serial_enable(serial_t *obj);
+
+
+
+
+
+
+
+
+
+
+ 
+int32_t serial_recv_stream_timeout(serial_t *obj, char *prxbuf, uint32_t len, uint32_t timeout_ms,	void *force_cs);
+
+
+
+
+
+
+
+
+
+
+ 
+int32_t serial_recv_stream_dma_timeout(serial_t *obj, char *prxbuf, uint32_t len, uint32_t timeout_ms,	void *force_cs);
+
+
+
+ 
+
+
+
+
+
+#line 24 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+   
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+ 
+
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\include\\wifi_constants.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+#line 36 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\include\\wifi_constants.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+typedef enum
+{
+    RTW_SUCCESS                      = 0,     
+    RTW_PENDING                      = 1,     
+    RTW_TIMEOUT                      = 2,     
+    RTW_PARTIAL_RESULTS              = 3,     
+    RTW_INVALID_KEY                  = 4,     
+    RTW_DOES_NOT_EXIST               = 5,     
+    RTW_NOT_AUTHENTICATED            = 6,     
+    RTW_NOT_KEYED                    = 7,     
+    RTW_IOCTL_FAIL                   = 8,     
+    RTW_BUFFER_UNAVAILABLE_TEMPORARY = 9,     
+    RTW_BUFFER_UNAVAILABLE_PERMANENT = 10,    
+    RTW_WPS_PBC_OVERLAP              = 11,    
+    RTW_CONNECTION_LOST              = 12,    
+
+    RTW_ERROR                        = -1,    
+    RTW_BADARG                       = -2,    
+    RTW_BADOPTION                    = -3,    
+    RTW_NOTUP                        = -4,    
+    RTW_NOTDOWN                      = -5,    
+    RTW_NOTAP                        = -6,    
+    RTW_NOTSTA                       = -7,    
+    RTW_BADKEYIDX                    = -8,    
+    RTW_RADIOOFF                     = -9,    
+    RTW_NOTBANDLOCKED                = -10,   
+    RTW_NOCLK                        = -11,   
+    RTW_BADRATESET                   = -12,   
+    RTW_BADBAND                      = -13,   
+    RTW_BUFTOOSHORT                  = -14,   
+    RTW_BUFTOOLONG                   = -15,   
+    RTW_BUSY                         = -16,   
+    RTW_NOTASSOCIATED                = -17,   
+    RTW_BADSSIDLEN                   = -18,   
+    RTW_OUTOFRANGECHAN               = -19,   
+    RTW_BADCHAN                      = -20,   
+    RTW_BADADDR                      = -21,   
+    RTW_NORESOURCE                   = -22,   
+    RTW_UNSUPPORTED                  = -23,   
+    RTW_BADLEN                       = -24,   
+    RTW_NOTREADY                     = -25,   
+    RTW_EPERM                        = -26,   
+    RTW_NOMEM                        = -27,   
+    RTW_ASSOCIATED                   = -28,   
+    RTW_RANGE                        = -29,   
+    RTW_NOTFOUND                     = -30,   
+    RTW_WME_NOT_ENABLED              = -31,   
+    RTW_TSPEC_NOTFOUND               = -32,   
+    RTW_ACM_NOTSUPPORTED             = -33,   
+    RTW_NOT_WME_ASSOCIATION          = -34,   
+    RTW_SDIO_ERROR                   = -35,   
+    RTW_WLAN_DOWN                    = -36,   
+    RTW_BAD_VERSION                  = -37,   
+    RTW_TXFAIL                       = -38,   
+    RTW_RXFAIL                       = -39,   
+    RTW_NODEVICE                     = -40,   
+    RTW_UNFINISHED                   = -41,   
+    RTW_NONRESIDENT                  = -42,   
+    RTW_DISABLED                     = -43    
+} rtw_result_t;
+
+
+
+
+
+ 
+typedef enum {
+    RTW_SECURITY_OPEN           = 0,                                                 
+    RTW_SECURITY_WEP_PSK        = 0x0001,                                       
+    RTW_SECURITY_WEP_SHARED     = ( 0x0001 | 0x00008000 ),                  
+    RTW_SECURITY_WPA_TKIP_PSK   = ( 0x00200000  | 0x0002 ),                  
+    RTW_SECURITY_WPA_AES_PSK    = ( 0x00200000  | 0x0004 ),                   
+    RTW_SECURITY_WPA2_AES_PSK   = ( 0x00400000 | 0x0004 ),                   
+    RTW_SECURITY_WPA2_TKIP_PSK  = ( 0x00400000 | 0x0002 ),                  
+    RTW_SECURITY_WPA2_MIXED_PSK = ( 0x00400000 | 0x0004 | 0x0002 ),    
+    RTW_SECURITY_WPA_WPA2_MIXED = ( 0x00200000  | 0x00400000 ),                 
+
+    RTW_SECURITY_WPS_OPEN       = 0x10000000,                                       
+    RTW_SECURITY_WPS_SECURE     = (0x10000000 | 0x0004),                       
+
+    RTW_SECURITY_UNKNOWN        = -1,                                                
+
+    RTW_SECURITY_FORCE_32_BIT   = 0x7fffffff                                         
+} rtw_security_t;
+
+typedef enum {
+    RTW_ENCRYPTION_UNKNOWN = 0,                 
+    RTW_ENCRYPTION_OPEN = 1,
+    RTW_ENCRYPTION_WEP40 = 2,
+    RTW_ENCRYPTION_WPA_TKIP = 3,
+    RTW_ENCRYPTION_WPA_AES = 4,
+    RTW_ENCRYPTION_WPA2_TKIP = 5,
+    RTW_ENCRYPTION_WPA2_AES = 6,
+    RTW_ENCRYPTION_WPA2_MIXED = 7,
+    RTW_ENCRYPTION_WEP104 = 9,
+    RTW_ENCRYPTION_UNDEF = 0xFF,                 
+} rtw_encryption_t;
+
+typedef enum {
+	RTW_FALSE = 0,
+	RTW_TRUE  = 1
+} rtw_bool_t;
+
+
+
+ 
+typedef enum {
+	RTW_802_11_BAND_5GHZ   = 0,  
+	RTW_802_11_BAND_2_4GHZ = 1   
+} rtw_802_11_band_t;
+
+
+
+ 
+typedef enum {
+	 
+	RTW_COUNTRY_WORLD1,	
+	RTW_COUNTRY_ETSI1,	
+	RTW_COUNTRY_FCC1,	
+	RTW_COUNTRY_MKK1,	
+	RTW_COUNTRY_ETSI2,	
+	RTW_COUNTRY_FCC2,	
+	RTW_COUNTRY_WORLD2,	
+	RTW_COUNTRY_MKK2,	
+	RTW_COUNTRY_GLOBAL,	
+
+	 
+	RTW_COUNTRY_WORLD,	
+	RTW_COUNTRY_EU,		
+
+	 
+	RTW_COUNTRY_JP,		
+
+	 
+	RTW_COUNTRY_AS,		
+	RTW_COUNTRY_BM,
+	RTW_COUNTRY_CA,
+	RTW_COUNTRY_DM,
+	RTW_COUNTRY_DO,
+	RTW_COUNTRY_FM,
+	RTW_COUNTRY_GD,
+	RTW_COUNTRY_GT,
+	RTW_COUNTRY_GU,
+	RTW_COUNTRY_HT,
+	RTW_COUNTRY_MH,
+	RTW_COUNTRY_MP,
+	RTW_COUNTRY_NI,
+	RTW_COUNTRY_PA,
+	RTW_COUNTRY_PR,
+	RTW_COUNTRY_PW,
+	RTW_COUNTRY_TW,
+	RTW_COUNTRY_US,
+	RTW_COUNTRY_VI,
+
+	 
+	RTW_COUNTRY_AD,		
+	RTW_COUNTRY_AE,
+	RTW_COUNTRY_AF,
+	RTW_COUNTRY_AI,
+	RTW_COUNTRY_AL,
+	RTW_COUNTRY_AM,
+	RTW_COUNTRY_AN,
+	RTW_COUNTRY_AR,
+	RTW_COUNTRY_AT,
+	RTW_COUNTRY_AU,
+	RTW_COUNTRY_AW,
+	RTW_COUNTRY_AZ,
+	RTW_COUNTRY_BA,
+	RTW_COUNTRY_BB,
+	RTW_COUNTRY_BD,
+	RTW_COUNTRY_BE,
+	RTW_COUNTRY_BF,
+	RTW_COUNTRY_BG,
+	RTW_COUNTRY_BH,
+	RTW_COUNTRY_BL,
+	RTW_COUNTRY_BN,
+	RTW_COUNTRY_BO,
+	RTW_COUNTRY_BR,
+	RTW_COUNTRY_BS,
+	RTW_COUNTRY_BT,
+	RTW_COUNTRY_BY,
+	RTW_COUNTRY_BZ,
+	RTW_COUNTRY_CF,
+	RTW_COUNTRY_CH,
+	RTW_COUNTRY_CI,
+	RTW_COUNTRY_CL,
+	RTW_COUNTRY_CN,
+	RTW_COUNTRY_CO,
+	RTW_COUNTRY_CR,
+	RTW_COUNTRY_CX,
+	RTW_COUNTRY_CY,
+	RTW_COUNTRY_CZ,
+	RTW_COUNTRY_DE,
+	RTW_COUNTRY_DK,
+	RTW_COUNTRY_DZ,
+	RTW_COUNTRY_EC,
+	RTW_COUNTRY_EE,
+	RTW_COUNTRY_EG,
+	RTW_COUNTRY_ES,
+	RTW_COUNTRY_ET,
+	RTW_COUNTRY_FI,
+	RTW_COUNTRY_FR,
+	RTW_COUNTRY_GB,
+	RTW_COUNTRY_GE,
+	RTW_COUNTRY_GF,
+	RTW_COUNTRY_GH,
+	RTW_COUNTRY_GL,
+	RTW_COUNTRY_GP,
+	RTW_COUNTRY_GR,
+	RTW_COUNTRY_GY,
+	RTW_COUNTRY_HK,
+	RTW_COUNTRY_HN,
+	RTW_COUNTRY_HR,
+	RTW_COUNTRY_HU,
+	RTW_COUNTRY_ID,
+	RTW_COUNTRY_IE,
+	RTW_COUNTRY_IL,
+	RTW_COUNTRY_IN,
+	RTW_COUNTRY_IQ,
+	RTW_COUNTRY_IR,
+	RTW_COUNTRY_IS,
+	RTW_COUNTRY_IT,
+	RTW_COUNTRY_JM,
+	RTW_COUNTRY_JO,
+	RTW_COUNTRY_KE,
+	RTW_COUNTRY_KH,
+	RTW_COUNTRY_KN,
+	RTW_COUNTRY_KP,
+	RTW_COUNTRY_KR,
+	RTW_COUNTRY_KW,
+	RTW_COUNTRY_KY,
+	RTW_COUNTRY_KZ,
+	RTW_COUNTRY_LA,
+	RTW_COUNTRY_LB,
+	RTW_COUNTRY_LC,
+	RTW_COUNTRY_LI,
+	RTW_COUNTRY_LK,
+	RTW_COUNTRY_LR,
+	RTW_COUNTRY_LS,
+	RTW_COUNTRY_LT,
+	RTW_COUNTRY_LU,
+	RTW_COUNTRY_LV,
+	RTW_COUNTRY_MA,
+	RTW_COUNTRY_MC,
+	RTW_COUNTRY_MD,
+	RTW_COUNTRY_ME,
+	RTW_COUNTRY_MF,
+	RTW_COUNTRY_MK,
+	RTW_COUNTRY_MN,
+	RTW_COUNTRY_MO,
+	RTW_COUNTRY_MQ,
+	RTW_COUNTRY_MR,
+	RTW_COUNTRY_MT,
+	RTW_COUNTRY_MU,
+	RTW_COUNTRY_MV,
+	RTW_COUNTRY_MW,
+	RTW_COUNTRY_MX,
+	RTW_COUNTRY_MY,
+	RTW_COUNTRY_NG,
+	RTW_COUNTRY_NL,
+	RTW_COUNTRY_NO,
+	RTW_COUNTRY_NP,
+	RTW_COUNTRY_NZ,
+	RTW_COUNTRY_OM,
+	RTW_COUNTRY_PE,
+	RTW_COUNTRY_PF,
+	RTW_COUNTRY_PG,
+	RTW_COUNTRY_PH,
+	RTW_COUNTRY_PK,
+	RTW_COUNTRY_PL,
+	RTW_COUNTRY_PM,
+	RTW_COUNTRY_PT,
+	RTW_COUNTRY_PY,
+	RTW_COUNTRY_QA,
+	RTW_COUNTRY_RS,
+	RTW_COUNTRY_RU,
+	RTW_COUNTRY_RW,
+	RTW_COUNTRY_SA,
+	RTW_COUNTRY_SE,
+	RTW_COUNTRY_SG,
+	RTW_COUNTRY_SI,
+	RTW_COUNTRY_SK,
+	RTW_COUNTRY_SN,
+	RTW_COUNTRY_SR,
+	RTW_COUNTRY_SV,
+	RTW_COUNTRY_SY,
+	RTW_COUNTRY_TC,
+	RTW_COUNTRY_TD,
+	RTW_COUNTRY_TG,
+	RTW_COUNTRY_TH,
+	RTW_COUNTRY_TN,
+	RTW_COUNTRY_TR,
+	RTW_COUNTRY_TT,
+	RTW_COUNTRY_TZ,
+	RTW_COUNTRY_UA,
+	RTW_COUNTRY_UG,
+	RTW_COUNTRY_UY,
+	RTW_COUNTRY_UZ,
+	RTW_COUNTRY_VC,
+	RTW_COUNTRY_VE,
+	RTW_COUNTRY_VN,
+	RTW_COUNTRY_VU,
+	RTW_COUNTRY_WF,
+	RTW_COUNTRY_WS,
+	RTW_COUNTRY_YE,
+	RTW_COUNTRY_YT,
+	RTW_COUNTRY_ZA,
+	RTW_COUNTRY_ZW,
+	
+	RTW_COUNTRY_MAX
+
+}rtw_country_code_t;
+
+
+
+ 
+typedef enum {
+	RTW_ADAPTIVITY_DISABLE = 0,
+	RTW_ADAPTIVITY_NORMAL,			
+	RTW_ADAPTIVITY_CARRIER_SENSE	
+} rtw_adaptivity_mode_t;
+
+
+
+
+ 
+typedef enum {
+	RTW_MODE_NONE = 0,
+	RTW_MODE_STA,
+	RTW_MODE_AP,
+	RTW_MODE_STA_AP,
+	RTW_MODE_PROMISC,
+	RTW_MODE_P2P
+}rtw_mode_t;
+
+typedef enum {
+	RTW_SCAN_FULL = 0,
+	RTW_SCAN_SOCIAL,
+	RTW_SCAN_ONE
+}rtw_scan_mode_t;
+
+
+
+ 
+typedef enum {
+	RTW_LINK_DISCONNECTED = 0,
+	RTW_LINK_CONNECTED
+} rtw_link_status_t;
+
+
+
+ 
+typedef enum {
+    RTW_SCAN_TYPE_ACTIVE              = 0x00,   
+    RTW_SCAN_TYPE_PASSIVE             = 0x01,   
+    RTW_SCAN_TYPE_PROHIBITED_CHANNELS = 0x04    
+} rtw_scan_type_t;
+
+
+
+ 
+typedef enum {
+    RTW_BSS_TYPE_INFRASTRUCTURE = 0,  
+    RTW_BSS_TYPE_ADHOC          = 1,  
+    RTW_BSS_TYPE_ANY            = 2,  
+
+    RTW_BSS_TYPE_UNKNOWN        = -1  
+} rtw_bss_type_t;
+
+typedef enum {
+	RTW_SCAN_COMMAMD = 0x01
+} rtw_scan_command_t;
+
+typedef enum{
+	COMMAND1					= 0x01
+}rtw_command_type;
+
+typedef enum {
+	RTW_WPS_TYPE_DEFAULT 		    	= 0x0000,
+	RTW_WPS_TYPE_USER_SPECIFIED 		= 0x0001,
+	RTW_WPS_TYPE_MACHINE_SPECIFIED   	= 0x0002,
+	RTW_WPS_TYPE_REKEY 			        = 0x0003,
+	RTW_WPS_TYPE_PUSHBUTTON 		    = 0x0004,
+	RTW_WPS_TYPE_REGISTRAR_SPECIFIED 	= 0x0005,
+    RTW_WPS_TYPE_NONE                   = 0x0006,
+    RTW_WPS_TYPE_WSC                    = 0x0007
+} rtw_wps_type_t;
+
+
+
+ 
+typedef enum {
+    RTW_NETWORK_B   = 1,
+	RTW_NETWORK_BG  = 3,
+	RTW_NETWORK_BGN = 11
+} rtw_network_mode_t;
+
+
+
+ 
+typedef enum {
+    RTW_STA_INTERFACE     = 0,  
+    RTW_AP_INTERFACE      = 1,  
+} rtw_interface_t;
+
+
+
+ 
+typedef enum {
+	RTW_POSITIVE_MATCHING  = 0,  
+	RTW_NEGATIVE_MATCHING  = 1   
+} rtw_packet_filter_rule_t;
+
+
+
+ 
+typedef enum {
+	RTW_PROMISC_DISABLE = 0,   
+	RTW_PROMISC_ENABLE = 1,    
+	RTW_PROMISC_ENABLE_1 = 2,  
+	RTW_PROMISC_ENABLE_2 = 3,  
+	RTW_PROMISC_ENABLE_3 = 4,  
+} rtw_rcr_level_t;
+
+
+
+ 
+typedef enum{
+	RTW_NO_ERROR = 0,
+	RTW_NONE_NETWORK = 1,
+	RTW_CONNECT_FAIL = 2,
+	RTW_WRONG_PASSWORD = 3 ,
+	RTW_4WAY_HANDSHAKE_TIMEOUT = 4,
+	RTW_DHCP_FAIL = 5,
+	RTW_UNKNOWN,
+}rtw_connect_error_flag_t;
+
+typedef enum {
+	RTW_TX_PWR_PERCENTAGE_100 = 0,  
+	RTW_TX_PWR_PERCENTAGE_75 = 1,  
+	RTW_TX_PWR_PERCENTAGE_50 = 2,  
+	RTW_TX_PWR_PERCENTAGE_25 = 3,  
+	RTW_TX_PWR_PERCENTAGE_12_5 = 4,  
+}rtw_tx_pwr_percentage_t;
+
+
+
+ 
+typedef enum _WIFI_EVENT_INDICATE{
+	WIFI_EVENT_CONNECT = 0,
+	WIFI_EVENT_DISCONNECT = 1,
+	WIFI_EVENT_FOURWAY_HANDSHAKE_DONE = 2,	
+	WIFI_EVENT_SCAN_RESULT_REPORT = 3,
+	WIFI_EVENT_SCAN_DONE = 4,
+	WIFI_EVENT_RECONNECTION_FAIL = 5,
+	WIFI_EVENT_SEND_ACTION_DONE = 6,
+	WIFI_EVENT_RX_MGNT = 7,
+	WIFI_EVENT_STA_ASSOC = 8,
+	WIFI_EVENT_STA_DISASSOC = 9,
+	WIFI_EVENT_STA_WPS_START = 10,
+	WIFI_EVENT_WPS_FINISH = 11,
+	WIFI_EVENT_EAPOL_START = 12,
+	WIFI_EVENT_EAPOL_RECVD = 13,
+	WIFI_EVENT_NO_NETWORK = 14,
+	WIFI_EVENT_BEACON_AFTER_DHCP = 15,
+	WIFI_EVENT_IP_CHANGED = 16,
+	WIFI_EVENT_MAX,
+}rtw_event_indicate_t;
+
+
+
+
+ 
+
+#line 29 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\include\\wifi_structures.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+
+
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\platform\\dlist.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+struct list_head {
+	struct list_head *next, *prev;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+static inline void __list_add(struct list_head *newitem,
+			      struct list_head *prev,
+			      struct list_head *next)
+{
+	next->prev = newitem;
+	newitem->next = next;
+	newitem->prev = prev;
+	prev->next = newitem;
+}
+
+
+
+
+
+
+
+
+ 
+static inline void list_add(struct list_head *newitem, struct list_head *head)
+{
+	__list_add(newitem, head, head->next);
+}
+
+
+
+
+
+
+
+
+ 
+static inline void list_add_tail(struct list_head *newitem, struct list_head *head)
+{
+	__list_add(newitem, head->prev, head);
+}
+
+
+
+
+
+
+
+ 
+static inline void __list_del(struct list_head *prev, struct list_head *next)
+{
+	next->prev = prev;
+	prev->next = next;
+}
+
+
+
+
+
+ 
+static inline void list_del(struct list_head *entry)
+{
+	__list_del(entry->prev, entry->next);
+	entry->next = (struct list_head *) 0;
+	entry->prev = (struct list_head *) 0;
+}
+
+
+
+
+ 
+static inline void list_del_init(struct list_head *entry)
+{
+	__list_del(entry->prev, entry->next);
+	do { (entry)->next = (entry); (entry)->prev = (entry); } while (0); 
+}
+
+
+
+
+
+ 
+static inline void list_move(struct list_head *list, struct list_head *head)
+{
+        __list_del(list->prev, list->next);
+        list_add(list, head);
+}
+
+
+
+
+
+ 
+static inline void list_move_tail(struct list_head *list,
+				  struct list_head *head)
+{
+        __list_del(list->prev, list->next);
+        list_add_tail(list, head);
+}
+
+
+
+
+ 
+static inline int list_empty(struct list_head *head)
+{
+	return head->next == head;
+}
+
+static inline void __list_splice(struct list_head *list,
+				 struct list_head *head)
+{
+	struct list_head *first = list->next;
+	struct list_head *last = list->prev;
+	struct list_head *at = head->next;
+
+	first->prev = head;
+	head->next = first;
+
+	last->next = at;
+	at->prev = last;
+}
+
+
+
+
+
+ 
+static inline void list_splice(struct list_head *list, struct list_head *head)
+{
+	if (!list_empty(list))
+		__list_splice(list, head);
+}
+
+
+
+
+
+
+
+ 
+static inline void list_splice_init(struct list_head *list,
+				    struct list_head *head)
+{
+	if (!list_empty(list)) {
+		__list_splice(list, head);
+		do { (list)->next = (list); (list)->prev = (list); } while (0);
+	}
+}
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+ 
+
+
+
+        	
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+#line 29 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\include\\wifi_structures.h"
+
+
+
+
+
+#pragma pack(1)
+
+
+
+
+ 
+typedef struct rtw_ssid {
+    unsigned char len;      
+    unsigned char val[33];  
+} rtw_ssid_t;
+
+#pragma pack()
+
+
+
+#pragma pack(1)
+
+
+
+
+ 
+typedef struct rtw_mac {
+    unsigned char octet[6];  
+} rtw_mac_t;
+
+#pragma pack()
+
+
+
+
+
+
+
+ 
+typedef struct rtw_ap_info {
+	rtw_ssid_t 			ssid;
+	rtw_security_t		security_type;
+	unsigned char 		*password;
+	int 				password_len;
+	int					channel;
+}rtw_ap_info_t;
+
+
+
+
+
+
+ 
+typedef struct rtw_network_info {
+	rtw_ssid_t 			ssid;
+	rtw_mac_t			bssid;
+	rtw_security_t		security_type;
+	unsigned char 		*password;
+	int 				password_len;
+	int					key_id;
+}rtw_network_info_t;
+
+
+#pragma pack(1)
+
+
+
+
+ 
+typedef struct rtw_scan_result {
+    rtw_ssid_t              SSID;              
+    rtw_mac_t               BSSID;             
+    signed short		                  signal_strength;   
+    rtw_bss_type_t          bss_type;          
+    rtw_security_t          security;          
+    rtw_wps_type_t          wps_type;          
+    unsigned int                      channel;           
+    rtw_802_11_band_t       band;                                                      
+} rtw_scan_result_t;
+
+#pragma pack()
+
+
+
+
+ 
+typedef struct rtw_scan_handler_result {
+    rtw_scan_result_t ap_details;
+    rtw_bool_t        scan_complete;
+    void*               user_data;
+
+} rtw_scan_handler_result_t;
+
+
+#pragma pack(1)
+
+
+
+
+ 
+typedef struct rtw_wifi_setting {
+	rtw_mode_t		mode;
+	unsigned char 		ssid[33];
+	unsigned char		channel;
+	rtw_security_t		security_type;
+	unsigned char 		password[65];
+	unsigned char		key_idx;
+}rtw_wifi_setting_t;
+
+#pragma pack()
+
+
+
+
+ 
+typedef struct rtw_wifi_config {
+	unsigned int		boot_mode;
+	unsigned char 		ssid[32];
+	unsigned char		ssid_len;
+	unsigned char		security_type;
+	unsigned char		password[65];
+	unsigned char		password_len;
+	unsigned char		channel;
+} rtw_wifi_config_t;
+
+
+
+ 
+typedef struct
+{
+    unsigned int    count;          
+    rtw_mac_t mac_list[1];    
+} rtw_maclist_t;
+
+
+
+
+
+ 
+typedef struct {
+    unsigned int      version;                 
+    unsigned int      length;                  
+                                           
+    rtw_mac_t     BSSID;
+    unsigned short      beacon_period;           
+    unsigned short      capability;              
+    unsigned char       SSID_len;
+    unsigned char       SSID[32];
+    unsigned char       channel;
+
+
+
+
+
+    unsigned short      atim_window;             
+    unsigned char       dtim_period;             
+    signed short       RSSI;                    
+
+    unsigned char       n_cap;                   
+    unsigned int      nbss_cap;                
+    unsigned char       basic_mcs[16];   
+
+    unsigned short      ie_offset;               
+    unsigned int      ie_length;              
+} rtw_bss_info_t;
+
+
+
+ 
+typedef struct {
+	unsigned short	offset;      
+	unsigned short	mask_size;   
+	unsigned char*	mask;        
+	unsigned char*	pattern;     
+} rtw_packet_filter_pattern_t;
+
+typedef struct ieee80211_frame_info{
+	unsigned short i_fc;
+	unsigned short i_dur;
+	unsigned char i_addr1[6];
+	unsigned char i_addr2[6];
+	unsigned char i_addr3[6];
+	unsigned short i_seq;
+	unsigned char bssid[6];
+	unsigned char encrypt;
+	signed char rssi;
+}ieee80211_frame_info_t;
+
+typedef struct {
+	char filter_id;
+	rtw_packet_filter_pattern_t patt;
+	rtw_packet_filter_rule_t rule;
+	unsigned char enable;
+}rtw_packet_filter_info_t;
+
+typedef struct rtw_mac_filter_list{
+	struct list_head node;
+	unsigned char mac_addr[6];
+}rtw_mac_filter_list_t;
+
+
+
+
+
+ 
+
+#line 30 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_util.h"
+
+
+
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+
+
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+typedef unsigned char __u8;
+typedef char __s8;
+typedef unsigned short __u16;
+typedef short __s16;
+typedef unsigned int __u32;
+typedef int __s32;
+typedef	unsigned long long __u64;
+typedef	long long __i64;
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+ 
+ 
+
+
+
+
+ 
+ 
+
+
+ 
+
+ 
+
+
+
+
+ 
+
+ 
+#line 285 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+ 
+#line 293 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+ 
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+ 
+#line 329 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+ 
+
+
+ 
+
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+ 
+
+ 
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+
+
+
+ 
+
+
+
+ 
+ 
+ 
+
+#line 445 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+
+
+
+ 
+
+
+ 
+
+
+
+
+ 
+
+#line 466 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+
+
+
+
+
+
+
+ 
+
+ 
+
+ 
+
+
+
+ 
+
+ 
+
+
+ 
+
+
+ 
+
+ 
+
+
+
+ 
+
+
+ 
+
+
+ 
+#line 510 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+ 
+#line 522 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+ 
+
+
+
+
+ 
+
+
+ 
+
+
+ 
+#line 544 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+ 
+#line 561 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+ 
+
+
+
+
+
+
+ 
+#line 580 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+ 
+#line 591 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+ 
+
+
+ 
+
+
+ 
+
+
+ 
+
+
+ 
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+#line 627 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+
+ 
+
+ 
+
+
+
+
+ 
+
+
+
+
+
+ 
+#line 674 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+ 
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+ 
+
+
+
+
+ 
+
+
+
+ 
+#line 713 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+ 
+
+
+ 
+
+
+
+
+ 
+
+ 
+
+struct sockaddr_t {
+  __u8 sa_len;
+  __u8 sa_family;
+  char sa_data[14];
+};
+
+
+
+ 
+struct	iw_param
+{
+  __s32		value;		 
+  __u8		fixed;		 
+  __u8		disabled;	 
+  __u16		flags;		 
+};
+
+
+
+
+ 
+struct	iw_point
+{
+  void		*pointer;	 
+  __u16		length;		 
+  __u16		flags;		 
+};
+
+
+
+
+
+
+
+
+ 
+struct	iw_freq
+{
+	__s32		m;		 
+	__s16		e;		 
+	__u8		i;		 
+	__u8		flags;		 
+};
+
+
+
+ 
+struct	iw_quality
+{
+	__u8		qual;		
+ 
+	__u8		level;		 
+	__u8		noise;		 
+	__u8		updated;	 
+};
+
+
+
+
+
+
+
+ 
+struct	iw_discarded
+{
+	__u32		nwid;		 
+	__u32		code;		 
+	__u32		fragment;	 
+	__u32		retries;	 
+	__u32		misc;		 
+};
+
+
+
+
+ 
+struct	iw_missed
+{
+	__u32		beacon;		 
+};
+
+
+
+ 
+struct	iw_thrspy
+{
+	struct sockaddr_t		addr;		 
+	struct iw_quality	qual;		 
+	struct iw_quality	low;		 
+	struct iw_quality	high;		 
+};
+
+
+
+
+
+
+
+
+
+
+
+ 
+struct	iw_scan_req
+{
+	__u8		scan_type;  
+	__u8		essid_len;
+	__u8		num_channels; 
+ 
+	__u8		flags; 
+
+ 
+	struct sockaddr_t	bssid; 
+ 
+
+	
+
+
+
+
+ 
+	__u8		essid[32];
+
+	
+
+
+
+
+
+
+
+
+ 
+	__u32		min_channel_time;  
+	__u32		max_channel_time;  
+
+	struct iw_freq	channel_list[32];
+};
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+struct	iw_encode_ext
+{
+	__u32		ext_flags;  
+	__u8		tx_seq[8];  
+	__u8		rx_seq[8];  
+	struct sockaddr_t	addr; 
+
+ 
+	__u16		alg;  
+	__u16		key_len;
+
+
+
+	__u8		key[0];
+
+};
+
+ 
+struct	iw_mlme
+{
+	__u16		cmd;  
+	__u16		reason_code;
+	struct sockaddr_t	addr;
+};
+
+ 
+
+
+
+
+
+
+struct	iw_pmksa
+{
+	__u32		cmd;  
+	struct sockaddr_t	bssid;
+	__u8		pmkid[16];
+};
+
+ 
+struct	iw_michaelmicfailure
+{
+	__u32		flags;
+	struct sockaddr_t	src_addr;
+	__u8		tsc[8];  
+};
+
+ 
+
+struct	iw_pmkid_cand
+{
+	__u32		flags;  
+	__u32		index; 
+ 
+	struct sockaddr_t	bssid;
+};
+
+ 
+
+
+ 
+struct	iw_statistics
+{
+	__u16		status;		
+ 
+
+	struct iw_quality	qual;		
+ 
+	struct iw_discarded	discard;	 
+	struct iw_missed	miss;		 
+};
+
+ 
+
+
+
+
+
+
+
+
+
+ 
+union	iwreq_data
+{
+	 
+	char		name[16];
+	
+ 
+
+	struct iw_point	essid;		 
+	struct iw_param	nwid;		 
+	struct iw_freq	freq;		
+
+ 
+
+	struct iw_param	sens;		 
+	struct iw_param	bitrate;	 
+	struct iw_param	txpower;	 
+	struct iw_param	rts;		 
+	struct iw_param	frag;		 
+	__u32		mode;		 
+	struct iw_param	retry;		 
+
+	struct iw_point	encoding;	 
+	struct iw_param	power;		 
+	struct iw_quality qual;		 
+
+	struct sockaddr_t	ap_addr;	 
+	struct sockaddr_t	addr;		 
+
+	struct iw_param	param;		 
+	struct iw_point	data;		 
+	struct iw_point	passphrase;		 
+};
+
+
+
+
+
+
+ 
+struct	iwreq 
+{
+#line 1020 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+	char	ifr_name[16];	 
+
+	 
+	union	iwreq_data	u;
+};
+
+ 
+
+
+
+ 
+
+
+
+ 
+
+struct	iw_range
+{
+	 
+	__u32		throughput;	 
+	
+
+
+
+
+ 
+
+	 
+	__u32		min_nwid;	 
+	__u32		max_nwid;	 
+
+	 
+	__u16		old_num_channels;
+	__u8		old_num_frequency;
+
+	 
+	__u32		event_capa[6];
+
+	 
+	__s32		sensitivity;
+
+	 
+	
+
+
+ 
+	struct iw_quality	max_qual;	 
+	
+
+
+
+
+
+
+
+ 
+	struct iw_quality	avg_qual;	 
+
+	 
+	__u8		num_bitrates;	 
+	__s32		bitrate[32];	 
+
+	 
+	__s32		min_rts;	 
+	__s32		max_rts;	 
+
+	 
+	__s32		min_frag;	 
+	__s32		max_frag;	 
+
+	 
+	__s32		min_pmp;	 
+	__s32		max_pmp;	 
+	__s32		min_pmt;	 
+	__s32		max_pmt;	 
+	__u16		pmp_flags;	 
+	__u16		pmt_flags;	 
+	__u16		pm_capa;	 
+
+	 
+	__u16	encoding_size[8];	 
+	__u8	num_encoding_sizes;	 
+	__u8	max_encoding_tokens;	 
+	 
+	__u8	encoding_login_index;	 
+
+	 
+	__u16		txpower_capa;	 
+	__u8		num_txpower;	 
+	__s32		txpower[8];	 
+
+	 
+	__u8		we_version_compiled;	 
+	__u8		we_version_source;	 
+
+	 
+	__u16		retry_capa;	 
+	__u16		retry_flags;	 
+	__u16		r_time_flags;	 
+	__s32		min_retry;	 
+	__s32		max_retry;	 
+	__s32		min_r_time;	 
+	__s32		max_r_time;	 
+
+	 
+	__u16		num_channels;	 
+	__u8		num_frequency;	 
+	struct iw_freq	freq[32];	 
+	
+ 
+
+	__u32		enc_capa;	 
+
+	 
+	__s32		min_pms;	 
+	__s32		max_pms;	 
+	__u16		pms_flags;	 
+
+	 
+	__s32		modul_capa;	 
+
+	 
+	__u32		bitrate_capa;	 
+};
+
+
+
+ 
+ 
+struct	iw_priv_args
+{
+	__u32		cmd;		 
+	__u16		set_args;	 
+	__u16		get_args;	 
+	char		name[16];	 
+};
+
+ 
+
+
+
+
+ 
+
+
+
+ 
+struct iw_event
+{
+	__u16		len;			 
+	__u16		cmd;			 
+	union iwreq_data	u;		 
+};
+
+ 
+
+ 
+#line 1183 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+
+
+ 
+
+
+
+
+
+ 
+
+ 
+#line 1202 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wireless.h"
+
+#line 5 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_util.h"
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wlan_intf.h"
+
+
+
+
+
+
+
+
+
+
+
+#line 21 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\drivers\\wlan\\realtek\\src\\osdep\\wlan_intf.h"
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+
+
+
+
+int rltk_wlan_init(int idx_wlan, rtw_mode_t mode);				
+void rltk_wlan_deinit(void);
+void rltk_wlan_deinit_fastly(void);
+int rltk_wlan_start(int idx_wlan);
+void rltk_wlan_statistic(unsigned char idx);
+unsigned char rltk_wlan_running(unsigned char idx);		
+int rltk_wlan_control(unsigned long cmd, void *data);
+int rltk_wlan_handshake_done(void);
+int rltk_wlan_rf_on(void);
+int rltk_wlan_rf_off(void);
+int rltk_wlan_check_bus(void);
+int rltk_wlan_wireless_mode(unsigned char mode);
+int rltk_wlan_set_wps_phase(unsigned char is_trigger_wps);
+int rtw_ps_enable(int enable);
+int rltk_wlan_is_connected_to_ap(void);
+
+
+
+
+
+
+
+
+#line 6 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_util.h"
+
+
+
+
+
+
+
+int wext_get_ssid(const char *ifname, __u8 *ssid);
+int wext_set_ssid(const char *ifname, const __u8 *ssid, __u16 ssid_len);
+int wext_set_bssid(const char *ifname, const __u8 *bssid);
+int wext_get_bssid(const char *ifname, __u8 *bssid);
+int wext_set_auth_param(const char *ifname, __u16 idx, __u32 value);
+int wext_set_key_ext(const char *ifname, __u16 alg, const __u8 *addr, int key_idx, int set_tx, const __u8 *seq, __u16 seq_len, __u8 *key, __u16 key_len);
+int wext_get_enc_ext(const char *ifname, __u16 *alg, __u8 *key_idx, __u8 *passphrase);
+int wext_set_passphrase(const char *ifname, const __u8 *passphrase, __u16 passphrase_len);
+int wext_get_passphrase(const char *ifname, __u8 *passphrase);
+int wext_set_mode(const char *ifname, int mode);
+int wext_get_mode(const char *ifname, int *mode);
+int wext_set_ap_ssid(const char *ifname, const __u8 *ssid, __u16 ssid_len);
+int wext_set_country(const char *ifname, rtw_country_code_t country_code);
+int wext_get_rssi(const char *ifname, int *rssi);
+int wext_set_channel(const char *ifname, __u8 ch);
+int wext_get_channel(const char *ifname, __u8 *ch);
+int wext_register_multicast_address(const char *ifname, rtw_mac_t *mac);
+int wext_unregister_multicast_address(const char *ifname, rtw_mac_t *mac);
+int wext_set_scan(const char *ifname, char *buf, __u16 buf_len, __u16 flags);
+int wext_get_scan(const char *ifname, char *buf, __u16 buf_len);
+int wext_set_mac_address(const char *ifname, char * mac);
+int wext_get_mac_address(const char *ifname, char * mac);
+int wext_enable_powersave(const char *ifname, __u8 lps_mode, __u8 ips_mode);
+int wext_disable_powersave(const char *ifname);
+int wext_set_tdma_param(const char *ifname, __u8 slot_period, __u8 rfon_period_len_1, __u8 rfon_period_len_2, __u8 rfon_period_len_3);
+int wext_set_lps_dtim(const char *ifname, __u8 lps_dtim);
+int wext_get_lps_dtim(const char *ifname, __u8 *lps_dtim);
+int wext_get_tx_power(const char *ifname, __u8 *poweridx);
+int wext_set_txpower(const char *ifname, int poweridx);
+int wext_get_associated_client_list(const char *ifname, void * client_list_buffer, __u16 buffer_length);
+int wext_get_ap_info(const char *ifname, rtw_bss_info_t * ap_info, rtw_security_t* security);
+int wext_mp_command(const char *ifname, char *cmd, int show_msg);
+int wext_private_command(const char *ifname, char *cmd, int show_msg);
+int wext_private_command_with_retval(const char *ifname, char *cmd, char *ret_buf, int ret_len);
+void wext_wlan_indicate(unsigned int cmd, union iwreq_data *wrqu, char *extra);
+int wext_set_pscan_channel(const char *ifname, __u8 *ch, __u8 *pscan_config, __u8 length);
+int wext_set_autoreconnect(const char *ifname, __u8 mode, __u8 retry_times, __u16 timeout);
+int wext_get_autoreconnect(const char *ifname, __u8 *mode);
+int wext_set_adaptivity(rtw_adaptivity_mode_t adaptivity_mode);
+int wext_set_adaptivity_th_l2h_ini(__u8 l2h_threshold);
+int wext_get_auto_chl(const char *ifname, unsigned char *channel_set, unsigned char channel_num);
+int wext_set_sta_num(unsigned char ap_sta_num);
+int wext_del_station(const char *ifname, unsigned char* hwaddr);
+int wext_init_mac_filter(void);
+int wext_deinit_mac_filter(void);
+int wext_add_mac_filter(unsigned char* hwaddr);
+int wext_del_mac_filter(unsigned char* hwaddr);
+void wext_set_indicate_mgnt(int enable);
+
+int wext_add_custom_ie(const char *ifname, void * cus_ie, int ie_num);
+int wext_update_custom_ie(const char *ifname, void * cus_ie, int ie_index);
+int wext_del_custom_ie(const char *ifname);
+
+
+
+
+int wext_send_mgnt(const char *ifname, char *buf, __u16 buf_len, __u16 flags);
+int wext_send_eapol(const char *ifname, char *buf, __u16 buf_len, __u16 flags);
+int wext_set_gen_ie(const char *ifname, char *buf, __u16 buf_len, __u16 flags);
+
+
+
+
+
+#line 31 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_ind.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+  
+
+
+
+
+
+
+
+ 
+ 
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_conf.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+#line 884 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_conf.h"
+
+
+#line 27 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\component\\common\\api\\wifi\\wifi_ind.h"
+
+typedef void (*rtw_event_handler_t)(char *buf, int buf_len, int flags, void* handler_user_data );
+
+typedef struct
+{
+
+	rtw_event_handler_t	handler;
+	void*	handler_user_data;
+} event_list_elem_t;
+
+
+
+
+
+
+
+ 
+void init_event_callback_list(void);
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+extern void wifi_indication( rtw_event_indicate_t event, char *buf, int buf_len, int flags);
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+extern void wifi_reg_event_handler(unsigned int event_cmds, rtw_event_handler_t handler_func, void *handler_user_data);
+
+
+
+
+
+
+
+
+
+ 
+extern void wifi_unreg_event_handler(unsigned int event_cmds, rtw_event_handler_t handler_func);
+
+ 
+
+
+
+#line 32 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+#line 57 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\api\\wifi\\wifi_conf.h"
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+typedef void (*rtw_scan_result_callback_t)( rtw_scan_result_t** result_ptr, void* user_data );
+typedef rtw_result_t (*rtw_scan_result_handler_t)( rtw_scan_handler_result_t* malloced_scan_result );
+
+
+
+ 
+typedef struct {
+	char *buf;
+	int buf_len;
+} scan_buf_arg;
+
+
+
+ 
+typedef struct internal_scan_handler{
+	rtw_scan_result_t** pap_details;
+	rtw_scan_result_t * ap_details;
+	int	scan_cnt;
+	rtw_bool_t	scan_complete;
+	unsigned char	max_ap_size;
+	rtw_scan_result_handler_t gscan_result_handler;
+
+
+
+	int 	scan_running;
+
+	void*	user_data;
+	unsigned int	scan_start_time;
+} internal_scan_handler_t;
+
+typedef struct {
+    rtw_network_info_t	network_info;
+    void *join_sema;
+} internal_join_result_t;
+
+
+
+ 
+
+
+
+
+
+
+ 
+int wifi_manager_init(void);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_connect(
+	char 				*ssid,
+	rtw_security_t	security_type,
+	char 				*password,
+	int 				ssid_len,
+	int 				password_len,
+	int 				key_id,
+	void 				*semaphore);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_connect_bssid(
+	unsigned char 		bssid[6],
+	char 				*ssid,
+	rtw_security_t	security_type,
+	char 				*password,
+	int 				bssid_len,
+	int 				ssid_len,
+	int 				password_len,
+	int 				key_id,
+	void 				*semaphore);
+
+
+
+
+
+
+ 
+int wifi_disconnect(void);
+
+
+
+
+
+
+ 
+int wifi_is_connected_to_ap(void);
+
+
+
+
+
+ 
+int wifi_is_up(rtw_interface_t interface);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_is_ready_to_transceive(rtw_interface_t interface);
+
+
+
+
+
+ 
+int wifi_set_mac_address(char * mac);
+
+
+
+
+
+
+ 
+int wifi_get_mac_address(char * mac);
+
+
+
+
+
+ 
+int wifi_enable_powersave(void);
+
+
+
+
+
+ 
+int wifi_disable_powersave(void);
+
+
+
+
+
+
+
+ 
+int wifi_get_txpower(int *poweridx);
+
+
+
+
+
+
+ 
+int wifi_set_txpower(int poweridx);
+
+
+
+
+
+
+
+ 
+int wifi_get_associated_client_list(void * client_list_buffer, unsigned short buffer_length);
+
+
+
+
+
+
+ 
+int wifi_get_ap_bssid(unsigned char *bssid);
+
+
+
+
+
+
+
+ 
+int wifi_get_ap_info(rtw_bss_info_t * ap_info, rtw_security_t* security);
+
+
+
+
+
+
+ 
+int wifi_set_country(rtw_country_code_t country_code);
+
+
+
+
+
+
+ 
+int wifi_get_rssi(int *pRSSI);
+
+
+
+
+
+
+
+ 
+int wifi_set_channel(int channel);
+
+
+
+
+
+
+
+ 
+int wifi_get_channel(int *channel);
+
+
+
+
+
+
+
+
+
+ 
+int wifi_register_multicast_address(rtw_mac_t *mac);
+
+
+
+
+
+
+
+
+ 
+int wifi_unregister_multicast_address(rtw_mac_t *mac);
+
+
+
+
+
+
+ 
+__weak void wifi_set_mib(void);
+
+
+
+
+
+
+ 
+
+__weak void wifi_set_country_code(void);
+
+
+
+
+
+
+ 
+int wifi_rf_on(void);
+
+
+
+
+
+
+ 
+int wifi_rf_off(void);
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_on(rtw_mode_t mode);
+
+
+
+
+
+
+
+ 
+int wifi_off(void);
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_off_fastly(void);
+
+
+
+
+
+
+
+
+
+ 
+ 
+int wifi_set_power_mode(unsigned char ips_mode, unsigned char lps_mode);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_set_tdma_param(unsigned char slot_period, unsigned char rfon_period_len_1, unsigned char rfon_period_len_2, unsigned char rfon_period_len_3);
+
+
+
+
+
+
+
+ 
+int wifi_set_lps_dtim(unsigned char dtim);
+
+
+
+
+
+
+
+ 
+int wifi_get_lps_dtim(unsigned char *dtim);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_start_ap(
+	char 				*ssid,
+	rtw_security_t		security_type,
+	char 				*password,
+	int 				ssid_len,
+	int 				password_len,
+	int					channel);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_start_ap_with_hidden_ssid(
+	char 				*ssid,
+	rtw_security_t		security_type,
+	char 				*password,
+	int 				ssid_len,
+	int 				password_len,
+	int					channel);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_scan(rtw_scan_type_t                    scan_type,
+				  rtw_bss_type_t                     bss_type,
+				  void*                result_ptr);
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_scan_networks(rtw_scan_result_handler_t results_handler, void* user_data);
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_scan_networks_with_ssid(int (results_handler)(char*, int, char *, void *), void* user_data, int scan_buflen, char* ssid, int ssid_len);
+
+
+
+
+
+
+
+
+
+ 
+int wifi_set_pscan_chan(__u8 * channel_list,__u8 * pscan_config, __u8 length);
+
+
+
+
+
+
+ 
+int wifi_get_setting(const char *ifname,rtw_wifi_setting_t *pSetting);
+
+
+
+
+
+
+ 
+int wifi_show_setting(const char *ifname,rtw_wifi_setting_t *pSetting);
+
+
+
+
+
+
+
+
+ 
+int wifi_set_network_mode(rtw_network_mode_t mode);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_set_promisc(rtw_rcr_level_t enabled, void (*callback)(unsigned char*, unsigned int, void*), unsigned char len_used);
+
+
+
+
+
+ 
+void wifi_enter_promisc_mode(void);
+
+
+
+
+
+
+ 
+int wifi_set_wps_phase(unsigned char is_trigger_wps);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_restart_ap(
+	unsigned char 		*ssid,
+	rtw_security_t		security_type,
+	unsigned char 		*password,
+	int 				ssid_len,
+	int 				password_len,
+	int					channel);
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_config_autoreconnect(__u8 mode, __u8 retry_times, __u16 timeout);
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_set_autoreconnect(__u8 mode);
+
+
+
+
+
+
+
+ 
+int wifi_get_autoreconnect(__u8 *mode);
+
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_get_last_error(void);
+
+
+
+
+
+
+
+
+
+
+
+ 
+typedef enum CUSTOM_IE_TYPE{
+	PROBE_REQ = (1<<(0)),
+	PROBE_RSP = (1<<(1)),
+	BEACON	  = (1<<(2)),
+}rtw_custom_ie_type_t;
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+ 
+typedef struct _cus_ie{
+	__u8 *ie;
+	__u8 type;
+}rtw_custom_ie_t, *p_rtw_custom_ie_t;
+
+
+
+
+
+
+
+
+
+
+ 
+int wifi_add_custom_ie(void *cus_ie, int ie_num);
+
+
+
+
+
+
+
+
+ 
+int wifi_update_custom_ie(void *cus_ie, int ie_index);
+
+
+
+
+
+
+
+ 
+int wifi_del_custom_ie(void);
+
+
+
+
+
+
+
+
+ 
+void wifi_init_packet_filter(void);
+
+
+
+
+
+
+
+
+ 
+int wifi_add_packet_filter(unsigned char filter_id, rtw_packet_filter_pattern_t *patt, rtw_packet_filter_rule_t rule);
+
+
+
+
+
+
+ 
+int wifi_enable_packet_filter(unsigned char filter_id);
+
+
+
+
+
+ 
+int wifi_disable_packet_filter(unsigned char filter_id);
+
+
+
+
+
+ 
+int wifi_remove_packet_filter(unsigned char filter_id);
+
+
+
+
+
+
+ 
+
+
+
+
+void wifi_set_indicate_mgnt(int enable);
+
+
+
+
+
+
+
+
+
+ 
+void wifi_set_ap_polling_sta(__u8 enabled);
+
+
+
+
+
+ 
+
+
+
+
+#line 27 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\test\\wlan/wlan_test_inc.h"
+
+#line 22 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\test\\wlan/wlan_test_inc.h"
+
+
+#line 30 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+
+
+
+
+
+
+#line 42 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+
+
+
+
+ 
+
+
+
+  
+extern void promisc_test_all(int duration, unsigned char len_used);
+extern void vdata_init_device(void);
+extern void vdata_init_router(void);
+extern void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* userdata);
+extern void my_promisc_test_all_v2();
+
+
+
+
+SemaphoreHandle_t uart_rx_interrupt_sema_wifisniffer = 0;
+
+
+#line 1 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\EWARM-RELEASE\\..\\..\\..\\component\\common\\mbed\\hal\\timer_api.h"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
 
 
 
@@ -34822,7 +35267,7 @@ enum {
 
 
 
-#line 56 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+#line 64 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
 gtimer_t my_timer1;
 extern uint64_t g_times;
 extern uint64_t timestamp;
@@ -34833,7 +35278,7 @@ void timer1_timeout_handler( uint32_t id)
 {
     g_times++;
     timestamp++;
-    if( g_times % 10 == 0 ){
+    if( g_times % 10  ){
          g_second++;
       
     }
@@ -34874,6 +35319,72 @@ void MY_ATWM(void *arg){
 
 
 
+
+volatile char rc = 0;
+char data[100] = {0};
+char *rxdata = 0;
+uint8_t rxdata2[1024] = {0};
+uint8_t rxdata3[1024] = {0};
+
+
+int rxdatacount = 0;
+int rx_flag = -1;
+int rx_count = -1;
+serial_t sobj;
+void uart_send_string2(serial_t *sobj,char *pstr)
+{  
+    unsigned int i = 0;
+    while( *(pstr + i )!=0){
+            serial_putc(sobj,*(pstr + i));
+            i++;
+    }
+ 
+}
+
+void uart_irq( uint32_t id, SerialIrq event)
+{
+      serial_t *sobj = (void *)id;
+      if( event == RxIrq)
+      {
+           rc = serial_getc(sobj);
+           serial_putc(sobj,rc);
+           rxdatacount++;
+          data[rxdatacount] = rc;
+          if( rc == '\n')
+          {
+              _memcpy(rxdata, data, rxdatacount);
+              _memcpy(rxdata2, data, rxdatacount);
+               rtl_printf("rxdata = %s \r\n", rxdata);
+            rtl_printf("rxdata2 = \r\n");
+            for (int i = 1; i < rxdatacount; i++)
+            {
+                rtl_printf("%c", rxdata2[i]);
+                rxdata3[i - 1] = rxdata2[i];
+            }
+            _memcpy(rxdata, rxdata3, sizeof(rxdata3));
+            rtl_printf("\r\n");
+            rtl_printf("rxdata3 = %s \r\n", rxdata3);
+            rxdatacount = 0;
+            uart_send_string2(sobj, rxdata);
+            rtl_printf("\r\n receive newline \r\n");
+            _memset(data, 0, sizeof(data));
+            _memset(rxdata2, 0, sizeof(rxdata2));
+            _memset(rxdata3, 0, sizeof(rxdata3));
+              
+          }
+           
+          
+          
+      }
+       if (event == TxIrq && rc != 0)
+    {
+        uart_send_string2(sobj, "\r\n8195a$");
+        rc = 0;
+    }
+
+
+}
+
 void wifi_sniffer_init_thread(void *param)
 {
 
@@ -34881,16 +35392,16 @@ void wifi_sniffer_init_thread(void *param)
 
 	 
 	LwIP_Init();
-#line 120 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+#line 194 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
 	wifi_on(RTW_MODE_STA);
 
 	
 	wifi_set_autoreconnect(1);
 
-	rtl_printf("\n\r%s(%d), Available heap 0x%x", __FUNCTION__, 125, xPortGetFreeHeapSize());	
+	rtl_printf("\n\r%s(%d), Available heap 0x%x", __FUNCTION__, 199, xPortGetFreeHeapSize());	
 
 
-#line 134 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
+#line 208 "F:\\RTL8710workspace\\00009982-sdk-ameba-v4.0c\\sdk-ameba-v4.0c\\project\\wifi_sniffer\\src\\wifi_sniffer.c"
         wifi_init_packet_filter();
         
          vdata_init_device();
@@ -34900,13 +35411,25 @@ void wifi_sniffer_init_thread(void *param)
         
         gtimer_start_periodical( &my_timer1, 100000, (void*)timer1_timeout_handler,0);
         
+        
+       
+        
+         serial_init(&sobj, PA_23, PA_18);
+    serial_baud(&sobj, 115200);
+    serial_format(&sobj, 8, ParityNone, 1);
+
+    uart_send_string2(&sobj, "UART IRQ API Demo...\r\n");
+    uart_send_string2(&sobj, "Hello World!!\n");
+    uart_send_string2(&sobj, "\r\n8195a$");
+    serial_irq_handler(&sobj, uart_irq, (uint32_t)&sobj);
+    serial_irq_set(&sobj, RxIrq, 1);
+    serial_irq_set(&sobj, TxIrq, 1);
         while(1){
-         MY_ATWM(param);
+        
+          my_promsic_demo(3,0);
         }
       
           
-      
-         
        
          
        

@@ -19,6 +19,8 @@
 #include "tcpip.h"
 #include <dhcp/dhcps.h>
 #include "my_promic.h"   
+#include "serial_api.h" //uart 
+#include "serial_ex_api.h"  //uart
    
 #if CONFIG_WLAN
 #include "wifi_conf.h"
@@ -37,9 +39,15 @@
 #ifndef CONFIG_INTERACTIVE_MODE
 #define CONFIG_INTERACTIVE_MODE     1
 #endif
+/*UART pin location:     
+   UART0: 
+   PA_23  (TX)
+   PA_18  (RX)
+   */
+#define UART_TX PA_23
+#define UART_RX PA_18
 
   
-
 extern void promisc_test_all(int duration, unsigned char len_used);
 extern void vdata_init_device(void);
 extern void vdata_init_router(void);
@@ -63,7 +71,7 @@ void timer1_timeout_handler( uint32_t id)
 {
     g_times++;
     timestamp++;
-    if( g_times % 10 == 0 ){
+    if( g_times % 10  ){
          g_second++;
       
     }
@@ -104,6 +112,72 @@ void MY_ATWM(void *arg){
 #endif
 
 
+//²âÊÔ´®¿ÚÊä³ö
+volatile char rc = 0;
+char data[100] = {0};
+char *rxdata = NULL;
+uint8_t rxdata2[1024] = {0};
+uint8_t rxdata3[1024] = {0};
+
+
+int rxdatacount = 0;
+int rx_flag = -1;
+int rx_count = -1;
+serial_t sobj;
+void uart_send_string2(serial_t *sobj,char *pstr)
+{  
+    unsigned int i = 0;
+    while( *(pstr + i )!=0){
+            serial_putc(sobj,*(pstr + i));
+            i++;
+    }
+ 
+}
+
+void uart_irq( uint32_t id, SerialIrq event)
+{
+      serial_t *sobj = (void *)id;
+      if( event == RxIrq)
+      {
+           rc = serial_getc(sobj);
+           serial_putc(sobj,rc);
+           rxdatacount++;
+          data[rxdatacount] = rc;
+          if( rc == '\n')
+          {
+              memcpy( rxdata,data,rxdatacount);
+              memcpy ( rxdata2,data,rxdatacount);
+               printf("rxdata = %s \r\n", rxdata);
+            printf("rxdata2 = \r\n");
+            for (int i = 1; i < rxdatacount; i++)
+            {
+                printf("%c", rxdata2[i]);
+                rxdata3[i - 1] = rxdata2[i];
+            }
+            memcpy(rxdata, rxdata3, sizeof(rxdata3));
+            printf("\r\n");
+            printf("rxdata3 = %s \r\n", rxdata3);
+            rxdatacount = 0;
+            uart_send_string2(sobj, rxdata);
+            printf("\r\n receive newline \r\n");
+            memset(data, 0, sizeof(data));
+            memset(rxdata2, 0, sizeof(rxdata2));
+            memset(rxdata3, 0, sizeof(rxdata3));
+              
+          }
+           
+          
+          
+      }
+       if (event == TxIrq && rc != 0)
+    {
+        uart_send_string2(sobj, "\r\n8195a$");
+        rc = 0;
+    }
+
+
+}
+
 void wifi_sniffer_init_thread(void *param)
 {
 
@@ -140,13 +214,25 @@ void wifi_sniffer_init_thread(void *param)
         
         gtimer_start_periodical( &my_timer1, 100000, (void*)timer1_timeout_handler,NULL);
         
+        
+       
+        //uart test
+         serial_init(&sobj, UART_TX, UART_RX);
+    serial_baud(&sobj, 115200);
+    serial_format(&sobj, 8, ParityNone, 1);
+
+    uart_send_string2(&sobj, "UART IRQ API Demo...\r\n");
+    uart_send_string2(&sobj, "Hello World!!\n");
+    uart_send_string2(&sobj, "\r\n8195a$");
+    serial_irq_handler(&sobj, uart_irq, (uint32_t)&sobj);
+    serial_irq_set(&sobj, RxIrq, 1);
+    serial_irq_set(&sobj, TxIrq, 1);
         while(1){
-         MY_ATWM(param);
+        // MY_ATWM(param);
+          my_promsic_demo(3,0);
         }
       
           
-      
-         // my_promisc_test_all_v2();
        
          
        

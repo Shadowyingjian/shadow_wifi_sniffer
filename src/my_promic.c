@@ -5,11 +5,13 @@
 #include "tcpip.h"
 #include "wifi/wifi_conf.h"
 #include "my_promic.h"
+#include "serial_api.h" //uart 
+#include "serial_ex_api.h"  //uart
+#include "wifi802ee.h"
 #ifndef CONFIG_WLAN
 #define CONFIG_WLAN 1
 #endif
 
-/*
 //添加这部分是为了实现去重输出
 uint64_t timestamp = 121;
 uint64_t lasttime = 0;
@@ -49,9 +51,10 @@ void trans_int_to_string(uint8_t *s, uint8_t data);
 void str_encrypt(uint8_t *s, uint8_t *array, uint16_t len);
 //volatile int *rand;
 uint8_t G_KEY;
-*/
 
-
+//添加串口2输出
+extern void uart_send_string2(serial_t *sobj,char *pstr);
+extern serial_t sobj;
 #if CONFIG_WLAN
 #include <platform/platform_stdlib.h>
 
@@ -106,7 +109,7 @@ int my_promisc_get_fixed_channel(void *fixed_bssid, u8 *ssid, int *ssid_length)
 
 // End of Add extra interfaces
 
-/*
+
 //添加去重函数
 void vdata_init_device(void)
 {
@@ -335,15 +338,21 @@ void print_mac_device(uint8_t *mac,uint8_t rssi,uint8_t *mac2, uint8_t ssid_len,
     if( vdata_insert_device(mac, g_second) > 0 ){
       if( mac2 == NULL ){
           printf("\r\n 01|%02X%02X%02X%02X%02X%02X|%02X\n\0",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi);
-          
+          sprintf(vdata_macprint,"01|%02X%02X%02X%02X%02X%02X|%02X\n\0",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi);  
+          uart_send_string2(&sobj, vdata_macprint);
       }else{
           printf("\r\n 02|%02X%02X%02X%02X%02X%02X|%02X|%02X%02X%02X%02X%02X%02X|%02d|\0",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi,mac2[0],mac2[1],mac2[2],mac2[3],mac2[4],mac2[5],ssid_len);
-          
+          sprintf(vdata_macprint,"02|%02X%02X%02X%02X%02X%02X|%02X|%02X%02X%02X%02X%02X%02X|%02d|\0",
+                          mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi,mac2[0],mac2[1],mac2[2],mac2[3],mac2[4],mac2[5],ssid_len);  
+          uart_send_string2(&sobj,vdata_macprint);
           if(ssid_len < 33){
              printf(" %s\r\n",ptr_ssid);
+             uart_send_string2(&sobj,ptr_ssid);
+             uart_send_string2(&sobj,"\n");
           }
           else{
              printf("\r\n");
+             uart_send_string2(&sobj,"\n");
           }
           
       }
@@ -374,11 +383,16 @@ void print_mac_router(uint8_t *mac, uint8_t rssi, uint8_t ssid_len, uint8_t *ptr
   if( memcmp(mac_bssid_old,mac,6) != 0 ){
     if( vdata_insert_router( mac,g_second) > 0 ){
         printf("\r\n 00|%02X%02X%02X%02X%02X%02X|%02X|%02d|",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi,ssid_len);
+        sprintf(vdata_routerprint,"00|%02X%02X%02X%02X%02X%02X|%02X|%02d|",mac[0],mac[1],mac[2],mac[3],mac[4],mac[5],rssi,ssid_len);
+        uart_send_string2(&sobj, vdata_routerprint);
         if(ssid_len < 33){
              printf(" %s\r\n",ptr_ssid);
+             uart_send_string2(&sobj, ptr_ssid);
+             uart_send_string2(&sobj, "\n");
           }
           else{
              printf("\r\n");
+             uart_send_string2(&sobj, "\n");
           }
        
         memcpy( mac_bssid_old,mac,6);
@@ -388,7 +402,7 @@ void print_mac_router(uint8_t *mac, uint8_t rssi, uint8_t ssid_len, uint8_t *ptr
   
 
 }
-*/
+
 /*
 company_printf(const char* fmt,...);
 自定义printf函数
@@ -678,33 +692,83 @@ static void my_promisc_test(int duration, unsigned char len_used)
 		vPortFree((void *) frame);
 }
 
+struct sniffer_buf2{
+    struct RxControl rx_ctrl;
+    struct framectrl_80211 fr_ctrl;
+    uint8_t buf[110];
+    uint16_t cnt;
+    uint16_t len;
+};
+
 void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* userdata)
 {
-  /*
+    struct my_eth_frame *frame = (struct my_eth_frame *)pvPortMalloc(sizeof(struct my_eth_frame));
+    if( frame ){
+        frame->prev = NULL;
+        frame->next = NULL;
+                /*  
+		* type is the first byte of Frame Control Field of 802.11 frame
+		* If the from/to ds information is needed, type could be reused as follows:
+		* frame->type = ((((ieee80211_frame_info_t *)userdata)->i_fc & 0x0100) == 0x0100) ? 2 : 1;
+		* 1: from ds; 2: to ds
+		*/	
+           frame->type = *buf;
+           frame->rssi = ((ieee80211_frame_info_t *)userdata)->rssi;
+           frame->ptr_data = buf;
+           frame->len = len;
+               taskENTER_CRITICAL();
+
+		if(my_eth_buffer.tail) {
+			my_eth_buffer.tail->next = frame;
+			frame->prev = my_eth_buffer.tail;
+			my_eth_buffer.tail = frame;
+		}
+		else {
+			my_eth_buffer.head = frame;
+			my_eth_buffer.tail = frame;
+		}
+
+		taskEXIT_CRITICAL();
+    }
+   
+    
+
+
+}
+/*
+void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* userdata)
+{
+  
 	struct my_eth_frame *frame = (struct my_eth_frame *) pvPortMalloc(sizeof(struct my_eth_frame));
 	
 	if(frame) {
 		frame->prev = NULL;
 		frame->next = NULL;
        
+                
+                //add by shadow
+                struct sniffer_buf2 *sniffer = (struct sniffer_buf2*)buf;
+                
 		memcpy(frame->da, buf+4, 6);
 		memcpy(frame->sa, buf+10, 6);
                 
+                
+                
                 //add for find out 
-                if( memcmp(g_3macs,buf+4,18) == 0){
+              //  if( memcmp(g_3macs,buf+4,18) == 0){
                     // 三个mac都和上次一样，则不解析
-                  printf(" g_3macs in the same!\r\n");
-                    return;
-                     
-                }
+               //   printf(" g_3macs in the same!\r\n");
+               //     return;
+              //       
+            //   }
                 memcpy( g_3macs,buf+4,18);
                 memcpy( mac1,buf+4,6);
                 memcpy( mac2,buf+10,6);
                 memcpy( mac3,buf+16,6);
-                if( mac1 == mac2 && mac2 == mac3){
-                     printf(" mac1 mac2 mac3 in the same!\r\n");
-                     return;
-                }
+               // if( mac1 == mac2 && mac2 == mac3){
+              //       printf(" mac1 mac2 mac3 in the same!\r\n");
+              //       return;
+            //    }
                 
                 
                // printf("\r\n Sniffer Test:::\r\n");
@@ -732,13 +796,51 @@ void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* userdat
                 /*
                 add by shadow for know wifi ssid
                 */
-  /*            
+ /*               
+                
+                if( sniffer->fr_ctrl.Type == 0x00){
+                  switch (sniffer->fr_ctrl.Subtype ){
+                  case 0x04:
+                        printf("\r\n -------p-= 0x04 ==\r\n");
+                        break;
+                  case 0x05:
+                         printf("\r\n -------p-= 0x05 ==\r\n");
+                         break;
+                  case 0x08:
+                          printf("\r\n -------p-= 0x08 ==\r\n");
+                          break;
+                    
+                  default:
+                           printf("\r\n -------p-= 0xEE ==\r\n");
+                           
+                           
+                             break;
+                  }
+                }
+                  else if(sniffer->fr_ctrl.Type == 0x01){
+                          printf(" \r\n +++++++0x01 \r\n");
+                          
+                  
+                  }else if( sniffer->fr_ctrl.Type == 0x02)
+                  {
+                             printf(" \r\n +++++++0x02 \r\n");
+                     
+                  }else if( sniffer->fr_ctrl.Type == 0x03){
+                  
+                         printf(" \r\n +++++++0x03 \r\n");
+                  }else{
+                  
+                          printf(" \r\n +++++++0xFF\r\n");
+                  }
+                   
+                
+                
                 if(frame->type == 0x40)
                 {
                   frame->ssid_len =frame->data[25];
                   memcpy(frame->ssid,buf+26,frame->ssid_len);
                 //  printf("\r\n ssid_len = %d ,ssid = %s \r\n",frame->ssid_len,frame->ssid);
-                  print_mac_device( mac2,frame->rssi,NULL,frame->ssid_len,frame->ssid);
+              //    print_mac_device( mac2,frame->rssi,NULL,frame->ssid_len,frame->ssid);
                   
                 }
                 else{   
@@ -747,12 +849,12 @@ void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* userdat
                    memcpy(frame->ssid,buf+38,frame->ssid_len);
                  //  printf("\r\n ssid_len = %d ,ssid = %s \r\n",frame->ssid_len,frame->ssid);
                   if( frame->type == 0x50){
-                  print_mac_device( mac1,frame->rssi,mac2,frame->ssid_len,frame->ssid);
+             //     print_mac_device( mac1,frame->rssi,mac2,frame->ssid_len,frame->ssid);
                    
                   }
                   
                   if ( frame->type == 0x80 ){
-                    print_mac_router(mac2,frame->rssi,frame->ssid_len,frame->ssid);
+            //        print_mac_router(mac2,frame->rssi,frame->ssid_len,frame->ssid);
                   }
                   
                   
@@ -774,8 +876,10 @@ void my_promisc_callback_all(unsigned char *buf, unsigned int len, void* userdat
 		taskEXIT_CRITICAL();
 	
         }
-  */
+  
 }
+                
+*/
 
 void my_promisc_test_all_v2( )
 {
@@ -821,7 +925,7 @@ void my_promisc_test_all_v2( )
 }
 void my_promisc_test_all(int duration, unsigned char len_used)
 {
-/*
+
 	int ch;
 	unsigned int start_time;
 	struct my_eth_frame *frame;
@@ -830,7 +934,7 @@ void my_promisc_test_all(int duration, unsigned char len_used)
 
 	wifi_enter_promisc_mode();
 	wifi_set_promisc(RTW_PROMISC_ENABLE_2, my_promisc_callback_all, len_used);
-        printf("---Start ....\r\n");
+       
 	for(ch = 1; ch <= 13; ch ++) {
 		if(wifi_set_channel(ch) == 0)
 			printf("\n\n\rSwitch to channel(%d)", ch);
@@ -840,9 +944,165 @@ void my_promisc_test_all(int duration, unsigned char len_used)
 		while(1) {
 			unsigned int current_time = xTaskGetTickCount();
 
-			if((current_time - start_time) < (duration * configTICK_RATE_HZ)) {
+			if((current_time - start_time) < (duration * configTICK_RATE_HZ2)) {
 				frame = my_retrieve_frame();
-                                if(frame){ */
+                                if(frame){
+                                  
+                                   printf("\r\n +++++++\r\n");
+                                   printf(" Type=%02X \r\n", frame->type);
+                                    for( int i=0;i<frame->len;i++)
+                                {
+                                      printf(" %02X",frame->ptr_data[i]);
+                                  }
+                                    printf("\r\n");
+                                  printf("\r\n--------\r\n");
+                                  
+                                   if( memcmp(g_3macs,frame->ptr_data+4,18) == 0){
+                                            // 三个mac都和上次一样，则不解析
+                                        printf(" g_3macs in the same!\r\n");
+                                        break;
+                                        // return;
+                                                 
+                                     }
+                                  memcpy( g_3macs,&frame->ptr_data[4],18);
+                                  memcpy( mac1,&frame->ptr_data[4],6);
+                                  memcpy( mac2,&frame->ptr_data[10],6);
+                                  memcpy( mac3,&frame->ptr_data[16],6);
+                                  
+                                  if( mac1 == mac2 && mac2 == mac3)
+                                  {
+                                         printf("\r\n MAC 1 MAC2 MAC 3 in the same!\r\n");
+                                          break;
+                                         //return; 
+                                     
+                                   }
+                                   struct sniffer_buf2 *sniffer = (struct sniffer_buf2*)frame->ptr_data;
+                                    uint8_t print_str[64];
+                                    uint8_t print_tmp[64];
+                                     printf("\r\n fr_ctrl.Type = %02X \r\n",sniffer->fr_ctrl.Type);
+                                     printf("\r\n fr_ctrl.Subtype = %02X \r\n",sniffer->fr_ctrl.Subtype);
+                                    if(sniffer->fr_ctrl.Type == 0x00){
+                                      switch (sniffer->fr_ctrl.Subtype){
+                                       
+                                      case 0x04:
+                                             frame->ssid_len =frame->ptr_data[25];
+                                             memcpy(frame->ssid,frame->ptr_data+26,frame->ssid_len);
+                                             //printf("\r\n ssid_len = %d ,ssid = %s \r\n",frame->ssid_len,frame->ssid);
+                                             print_mac_device( mac2,frame->rssi,NULL,frame->ssid_len,frame->ssid);
+                                             break;
+                                      case 0x05:
+                                            frame->ssid_len = frame->ptr_data[37];
+                                            memcpy(frame->ssid,frame->ptr_data+38,frame->ssid_len);
+                                          //  printf("\r\n ssid_len = %d ,ssid = %s \r\n",frame->ssid_len,frame->ssid);
+                                            print_mac_device( mac1,frame->rssi,mac2,frame->ssid_len,frame->ssid); 
+                                            break;
+                                      case 0x08:
+                                             frame->ssid_len = frame->ptr_data[37];
+                                            memcpy(frame->ssid,frame->ptr_data+38,frame->ssid_len);
+                                          //  printf("\r\n ssid_len = %d ,ssid = %s \r\n",frame->ssid_len,frame->ssid);
+                                            print_mac_router(mac2,frame->rssi,frame->ssid_len,frame->ssid); 
+                                            break;
+                                      default:
+                                        sprintf(print_str,"99|%02X|%d|%02d|%d|%d|%02X%02X%02X%02X%02X%02X|%02X%02X%02X%02X%02X%02X|%02X%02X%02X%02X%02X%02X\0",
+        				frame->rssi,
+        				sniffer->fr_ctrl.Type,
+        				sniffer->fr_ctrl.Subtype,
+        				sniffer->fr_ctrl.ToDS,
+						sniffer->fr_ctrl.FromDS,
+						mac1[0],mac1[1],mac1[2],mac1[3],mac1[4],mac1[5],
+						mac2[0],mac2[1],mac2[2],mac2[3],mac2[4],mac2[5],
+						mac3[0],mac3[1],mac3[2],mac3[3],mac3[4],mac3[5]);
+                                        printf(print_str);
+                                        printf("\r\n");
+                                            break;    
+                                      }
+                                    
+                                    }
+                               else if(sniffer->fr_ctrl.Type == 0x01){
+                                sprintf(print_str,"99|%02X|%d|%02d|%d|%d|%02X%02X%02X%02X%02X%02X|%02X%02X%02X%02X%02X%02X|%02X%02X%02X%02X%02X%02X\0",
+				frame->rssi,
+				sniffer->fr_ctrl.Type,
+				sniffer->fr_ctrl.Subtype,
+				sniffer->fr_ctrl.ToDS,
+				sniffer->fr_ctrl.FromDS,
+				mac1[0],mac1[1],mac1[2],mac1[3],mac1[4],mac1[5],
+				mac2[0],mac2[1],mac2[2],mac2[3],mac2[4],mac2[5],
+				mac3[0],mac3[1],mac3[2],mac3[3],mac3[4],mac3[5]);
+                                printf(print_str);
+                                printf("\r\n");    
+                           }else if(sniffer->fr_ctrl.Type == 0x02){
+                                sprintf(print_str,"99|%02X|%d|%02d|%d|%d|%02X%02X%02X%02X%02X%02X|%02X%02X%02X%02X%02X%02X|%02X%02X%02X%02X%02X%02X\0",
+				frame->rssi,
+				sniffer->fr_ctrl.Type,
+				sniffer->fr_ctrl.Subtype,
+				sniffer->fr_ctrl.ToDS,
+				sniffer->fr_ctrl.FromDS,
+				mac1[0],mac1[1],mac1[2],mac1[3],mac1[4],mac1[5],
+				mac2[0],mac2[1],mac2[2],mac2[3],mac2[4],mac2[5],
+				mac3[0],mac3[1],mac3[2],mac3[3],mac3[4],mac3[5]);
+                                printf(print_str);
+                                printf("\r\n");     
+                                    
+                         }else if(sniffer->fr_ctrl.Type == 0x03){
+                                sprintf(print_str,"99|%02X|%d|%02d|%d|%d|%02X%02X%02X%02X%02X%02X|%02X%02X%02X%02X%02X%02X|%02X%02X%02X%02X%02X%02X\0",
+				frame->rssi,
+				sniffer->fr_ctrl.Type,
+				sniffer->fr_ctrl.Subtype,
+				sniffer->fr_ctrl.ToDS,
+				sniffer->fr_ctrl.FromDS,
+				mac1[0],mac1[1],mac1[2],mac1[3],mac1[4],mac1[5],
+				mac2[0],mac2[1],mac2[2],mac2[3],mac2[4],mac2[5],
+				mac3[0],mac3[1],mac3[2],mac3[3],mac3[4],mac3[5]);
+                                printf(print_str);
+                                printf("\r\n");     
+                                    
+                         }else{
+                                sprintf(print_str,"99|%02X|%d|%02d|%d|%d|%02X%02X%02X%02X%02X%02X|%02X%02X%02X%02X%02X%02X|%02X%02X%02X%02X%02X%02X\0",
+				frame->rssi,
+				sniffer->fr_ctrl.Type,
+				sniffer->fr_ctrl.Subtype,
+				sniffer->fr_ctrl.ToDS,
+				sniffer->fr_ctrl.FromDS,
+				mac1[0],mac1[1],mac1[2],mac1[3],mac1[4],mac1[5],
+				mac2[0],mac2[1],mac2[2],mac2[3],mac2[4],mac2[5],
+				mac3[0],mac3[1],mac3[2],mac3[3],mac3[4],mac3[5]);
+                                printf(print_str);
+                                printf("\r\n");     
+                             
+                         }
+                      //   break;
+                         
+                         
+                                    
+                                   
+                                  
+                                  
+                                  
+      /*                            
+                                  if(frame->type == 0x40)
+                {
+                 // frame->ssid_len =frame->data[25];
+                 // memcpy(frame->ssid,buf+26,frame->ssid_len);
+                //  printf("\r\n ssid_len = %d ,ssid = %s \r\n",frame->ssid_len,frame->ssid);
+                //  print_mac_device( mac2,frame->rssi,NULL,frame->ssid_len,frame->ssid);
+                  
+                }
+                else{   
+                  
+                  // frame->ssid_len = frame->data[37];
+                  // memcpy(frame->ssid,buf+38,frame->ssid_len);
+                 //  printf("\r\n ssid_len = %d ,ssid = %s \r\n",frame->ssid_len,frame->ssid);
+                  if( frame->type == 0x50){
+               //   print_mac_device( mac1,frame->rssi,mac2,frame->ssid_len,frame->ssid);
+                   
+                  }
+                  
+                  if ( frame->type == 0x80 ){
+                 //   print_mac_router(mac2,frame->rssi,frame->ssid_len,frame->ssid);
+                  }
+             }
+                         
+                         */
                                   /*
                                     int i = 0;
                                     printf("\n\r |%02X|DA:", frame->type); 
@@ -853,9 +1113,9 @@ void my_promisc_test_all(int duration, unsigned char len_used)
                                       printf("%02X",frame->sa[i]);
                                     printf("|%d|%d|%s\r\n",frame->rssi,ch,frame->ssid);*/
                                   
-                          //          memset(frame->ssid,0,sizeof(frame->ssid));
+                        //         memset(frame->ssid,0,sizeof(frame->ssid));
                                 
-                               
+                             
 /*
 				if(frame) {
 					int i;
@@ -873,7 +1133,7 @@ void my_promisc_test_all(int duration, unsigned char len_used)
                                        memset(frame->ssid,0,sizeof(frame->ssid));
                                        printf("\r\n");
 */   
-/*
+
 #if CONFIG_INIC_CMD_RSP
 					if(my_inic_frame_tail){
 						if(my_inic_fr*ame_cnt < MY_MAX_INIC_FRAME_NUM){
@@ -889,7 +1149,7 @@ void my_promisc_test_all(int duration, unsigned char len_used)
 					vPortFree((void *) frame);
 				}
 				else
-					vTaskDelay(1);	//delay 1 tick
+					vTaskDelay(3);	//delay 1 tick
 			}
 			else
 				break;	
@@ -911,8 +1171,8 @@ void my_promisc_test_all(int duration, unsigned char len_used)
 
 	while((frame = my_retrieve_frame()) != NULL)
 		vPortFree((void *) frame);
-        printf("\r\n   end ....\r\n");
-                                  */
+       
+                                  
        
 }
 
